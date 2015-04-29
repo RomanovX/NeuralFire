@@ -9,9 +9,9 @@ public class fire extends object{
 		stackable = true;
 	}
 	
-	public void runAI()
+	public void runAI(Grid grid, int row, int col)
 	{
-		
+		grid.getField(row, col);
 	}
 	
 }

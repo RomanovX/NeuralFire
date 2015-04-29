@@ -21,6 +21,8 @@ public class main {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
 		
+
+		
 		for(int i = 0; i < GRIDROWS; i++)
 		{
 			for (int j = 0; j < GRIDCOLS; j++)
@@ -29,14 +31,18 @@ public class main {
 					grid.AddObject(i,j, new wall());
 			}
 		}
+
+		grid.AddObject(50,50, new droid());	
+		grid.AddObject(52,50, new wall());	
 		
+		grid.finalizeSimStep();
 		
 		while(true)
 		{
-			grid.Spin();
+			grid.Spin(grid);
 			
 			try {
-			    Thread.sleep(1000);                 //1000 milliseconds is one second.
+			    Thread.sleep(200);                 //200 milliseconds is one second.
 			} catch(InterruptedException ex) {
 			    Thread.currentThread().interrupt();
 			}

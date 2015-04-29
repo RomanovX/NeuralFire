@@ -35,7 +35,7 @@ public class Grid extends JPanel {
 		{
 			for(int j = 0; j < gridCols; j++)
 			{
-				ObjGrid[i][j] = new field(i, j);
+				ObjGrid[i][j] = new field(i, j, this);
 			}
 		}
 		
@@ -79,21 +79,39 @@ public class Grid extends JPanel {
 		}
 	}
 		
-	public void Spin()
+	public void Spin(Grid grid)
 	{
 		for(int i = 0; i < gridRows; i++)
 		{
 			for(int j = 0; j < gridCols; j++)
 			{
-				ObjGrid[i][j].UpdateField();
+				ObjGrid[i][j].UpdateField(grid);
+			}
+		}
+		
+		finalizeSimStep();
+	}
+	
+	public void finalizeSimStep()
+	{
+		for(int i = 0; i < gridRows; i++)
+		{
+			for(int j = 0; j < gridCols; j++)
+			{
+				ObjGrid[i][j].finalizeFieldUpdate();
 			}
 		}
 		repaint();
 	}
 	
-	public void AddObject(int col, int row, object x)
+	public void AddObject(int row, int col, object x)
 	{
-		ObjGrid[col][row].AddObject(x);
+		ObjGrid[row][col].AddObject(x);
+	}
+	
+	public field getField(int row, int col)
+	{
+		return ObjGrid[row][col];
 	}
 	
 } // end class Grid
