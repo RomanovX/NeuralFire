@@ -6,7 +6,7 @@ import java.util.ConcurrentModificationException;
 public class field {
 	private ArrayList<object> ObjList = new ArrayList<object>();
 	private ArrayList<object> NextIterationObjList = new ArrayList<object>();
-	private int intencity;
+	private int intensity;
 	int col;
 	int row;
 	private Grid grid; /*grid this field is part of*/
@@ -15,7 +15,7 @@ public class field {
 	private boolean hasWall;
 	
 	public field(int Row,int Col, Grid thisGrid){
-		intencity = 0;
+		intensity = 0;
 		hasFire = false;
 		hasDroid = false;
 		hasWall = false;
@@ -61,7 +61,7 @@ public class field {
 		if(hasWall)
 			return Color.black;
 		
-		if(intencity > 0)
+		if(intensity > 0)
 			return Color.yellow;
 		
 		return Color.white;
@@ -97,12 +97,12 @@ public class field {
 	
 	public void setIntencity(int x)
 	{
-		if (intencity < x)
-			intencity = x;
+		if (intensity < x)
+			intensity = x;
 	}
 	public void clearIntencity(int x)
 	{
-		intencity = 0;
+		intensity = 0;
 	}
 	
 	public boolean getPasseble()
