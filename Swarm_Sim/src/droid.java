@@ -10,7 +10,7 @@ public class droid extends object{
 	public void runAI(Grid grid,int row, int col)
 	{
 		field currField = grid.getField(row, col);
-		move(Dir.RIGHT,currField);
+		move(Dir.UP,currField);
 	}
 	
 	private void move(Dir dir, field Field)
@@ -24,6 +24,11 @@ public class droid extends object{
 		{
 			Field.AddObject(this);
 		}
+	}
+	
+	private void placeFeromone(field Field, int info)
+	{
+		Field.AddObject(new feromone(info));
 	}
 	
 }
