@@ -53,18 +53,18 @@ public class field {
 	
 	public Color GetColor(){
 		if(hasDroid)
-			return Color.green;
+			return Constants.droidColor;
 		
 		if(hasFire)
-			return Color.red;
+			return Constants.fireColor;
 		
 		if(hasWall)
-			return Color.black;
+			return Constants.wallColor;
 		
 		if(intencity > 0)
 			return Color.yellow;
 		
-		return Color.white;
+		return Constants.floorColor;
 	}
 	
 	public field getField(){
