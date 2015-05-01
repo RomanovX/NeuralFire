@@ -1,9 +1,10 @@
+package neuralfire.core;
 
-public class feromone extends object {
+public class Pheromone extends WorldObject {
 	
 	int info;
 	
-	public feromone(int Info){
+	public Pheromone(int Info){
 		movable = false;
 		stackable = false;
 		info = Info;

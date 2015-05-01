@@ -1,5 +1,7 @@
-public class fire extends object{
-	public fire(){
+package neuralfire.core;
+
+public class Fire extends WorldObject{
+	public Fire(){
 		movable = false;
 		stackable = false;
 	}
@@ -17,6 +19,8 @@ public class fire extends object{
 		{
 			for(int y = col - 10;y < col + 11; y++)
 			{
+				/*
+				 * erroneous code, temporarily commented out
 				if((x >= 0) && (y >= 0) && (x <= GRIDROWS-1) && (y <= 99))
 				{
 					dist = Math.abs(row - x) + Math.abs(col - y);
@@ -25,6 +29,7 @@ public class fire extends object{
 						grid.getField(row-(row - x), col-(col - y)).setIntencity(dist);
 					}
 				}
+				*/
 			}			
 		}
 		

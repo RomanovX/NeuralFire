@@ -1,11 +1,12 @@
+package neuralfire.core;
+
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 
-public class field {
-	private ArrayList<object> ObjList = new ArrayList<object>();
-	private ArrayList<object> NextIterationObjList = new ArrayList<object>();
+public class Field {
+	private ArrayList<WorldObject> ObjList = new ArrayList<WorldObject>();
+	private ArrayList<WorldObject> NextIterationObjList = new ArrayList<WorldObject>();
 	private int intensity;
 	int col;
 	int row;
@@ -14,7 +15,7 @@ public class field {
 	private boolean hasDroid;
 	private boolean hasWall;
 	
-	public field(int Row,int Col, Grid thisGrid){
+	public Field(int Row,int Col, Grid thisGrid){
 		intensity = 0;
 		hasFire = false;
 		hasDroid = false;
@@ -24,11 +25,11 @@ public class field {
 		grid = thisGrid;
 	}
 	
-	public void AddObject(object x)	{
+	public void AddObject(WorldObject x)	{
 		NextIterationObjList.add(x);
 	}
 	
-	public void RemoveObjext(object x)	{
+	public void RemoveObjext(WorldObject x)	{
 		ObjList.remove(x);
 	}
 	
@@ -37,14 +38,14 @@ public class field {
 		hasDroid = false;
 		hasWall = false;
 		
-		for(object x: ObjList){
-			if(x instanceof fire)
+		for(WorldObject x: ObjList){
+			if(x instanceof Fire)
 				hasFire = true;
 			
-			if(x instanceof droid)
+			if(x instanceof Droid)
 				hasDroid = true;
 			
-			if(x instanceof wall)
+			if(x instanceof Wall)
 				hasWall = true;
 				
 			x.runAI(grid,row,col);
@@ -67,13 +68,13 @@ public class field {
 		return Constants.floorColor;
 	}
 	
-	public field getField(){
+	public Field getField(){
 		return this;
 	}
 	
-	public field getAdjecentField(Dir dir)
+	public Field getAdjecentField(Constants.Dir dir)
 	{	
-		field AdjField;
+		Field AdjField;
 		
 		switch(dir){
 		case UP:
@@ -116,7 +117,7 @@ public class field {
 	public void finalizeFieldUpdate()
 	{
 		ObjList = NextIterationObjList;
-		NextIterationObjList = new ArrayList<object>();
+		NextIterationObjList = new ArrayList<WorldObject>();
 	}
 	
 }

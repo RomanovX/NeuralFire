@@ -1,17 +1,8 @@
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.IOException;
-import java.net.URL;
+package neuralfire.core;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-public class main {
-	
-	/*
-	static final int GRIDROWS = 100;
-	static final int GRIDCOLS = 100;
-	*/
+public class Main {
 	
 	/**
 	 * This main routine creates a window and sets its content
@@ -23,7 +14,7 @@ public class main {
 		window = new JFrame("Grid");  // Create a window with "Grid" in the title bar.
 		
 		EnvironmentParser envParser = new EnvironmentParser();
-		Grid grid = envParser.parseImage("environmentMaps/map1.bmp");
+		Grid grid = envParser.parseImage("../../environmentMaps/map1.bmp");
 		
 		window.setContentPane(grid);  // Add the Grid panel to the window.
 		window.pack(); // Set the size of the window based on the panel's preferred size.
@@ -39,7 +30,7 @@ public class main {
 			grid.Spin(grid);
 			
 			try {
-			    Thread.sleep(200);                 //200 milliseconds is one second.
+			    Thread.sleep(Constants.sleepDuration);                 //200 milliseconds is one second.
 			} catch(InterruptedException ex) {
 			    Thread.currentThread().interrupt();
 			}

@@ -1,3 +1,5 @@
+package neuralfire.core;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -10,7 +12,7 @@ public class EnvironmentParser {
 		byte[] pixels = null;
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(main.class.getResource(filename));
+			image = ImageIO.read(Main.class.getResource(filename));
 			pixels = ((DataBufferByte) image.getRaster().getDataBuffer())
 					.getData();
 		} catch (Exception e) {
@@ -32,13 +34,13 @@ public class EnvironmentParser {
 
 			Color fieldColor = new Color(red, green, blue);
 			if (fieldColor.equals(Constants.droidColor)) {
-				grid.AddObject(row, col, new droid());
+				grid.AddObject(row, col, new Droid());
 
 			} else if (fieldColor.equals(Constants.fireColor)) {
-				grid.AddObject(row, col, new fire());
+				grid.AddObject(row, col, new Fire());
 
 			} else if (fieldColor.equals(Constants.wallColor)) {
-				grid.AddObject(row, col, new wall());
+				grid.AddObject(row, col, new Wall());
 			}
 
 			col++;

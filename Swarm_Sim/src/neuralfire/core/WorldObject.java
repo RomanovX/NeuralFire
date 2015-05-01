@@ -1,7 +1,6 @@
-import java.awt.Color;
+package neuralfire.core;
 
-
-public class object {
+public class WorldObject {
 	protected boolean movable;
 	protected boolean stackable;
 	

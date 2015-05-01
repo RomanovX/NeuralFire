@@ -1,6 +1,10 @@
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
+package neuralfire.core;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
 
 /**
  * This class represents a "panel" that displays a grid of colored squares.
@@ -12,7 +16,7 @@ public class Grid extends JPanel {
 	private int gridRows; // Number of rows of squares.
 	private int gridCols; // Number of columns of squares.
 	private Color lineColor; // Color for lines drawn between squares; if null, no lines are drawn.
-	private field[][] ObjGrid = new field[100][100];
+	private Field[][] ObjGrid = new Field[100][100];
 		 
 	/**
 	 * This constructor creates a panel with a specified number of rows and columns
@@ -29,18 +33,18 @@ public class Grid extends JPanel {
 	public Grid(int rows, int columns, int preferredSquareSize) {
 		gridRows = rows;
 		gridCols = columns;
-		lineColor = Color.BLACK;
+		lineColor = Constants.lineColor;
 		
 		for(int i = 0; i < gridRows; i++)
 		{
 			for(int j = 0; j < gridCols; j++)
 			{
-				ObjGrid[i][j] = new field(i, j, this);
+				ObjGrid[i][j] = new Field(i, j, this);
 			}
 		}
 		
 		setPreferredSize( new Dimension(preferredSquareSize*columns, preferredSquareSize*rows) );
-		setBackground(Color.WHITE); // Set the background color for this panel.		
+		setBackground(Constants.backgroundColor); // Set the background color for this panel.		
 	}
 	
 	/**
@@ -104,12 +108,12 @@ public class Grid extends JPanel {
 		repaint();
 	}
 	
-	public void AddObject(int row, int col, object x)
+	public void AddObject(int row, int col, WorldObject x)
 	{
 		ObjGrid[row][col].AddObject(x);
 	}
 	
-	public field getField(int row, int col)
+	public Field getField(int row, int col)
 	{
 		return ObjGrid[row][col];
 	}
