@@ -21,5 +21,7 @@ public class Constants {
 	
 	public static enum Dir {
 		UP, DOWN, LEFT, RIGHT 
-	};
+	}
+
+	public static int fireRadius = 4;;
 }

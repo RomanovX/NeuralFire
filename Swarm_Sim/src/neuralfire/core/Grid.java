@@ -104,6 +104,7 @@ public class Grid extends JPanel {
 						g.drawString(""+ObjGrid[row][col].getRightPath().getPheromoneIntensity(), x1, (int)(y1+cellHeight/2));
 					if(ObjGrid[row][col].getDownPath()  != null)
 						g.drawString(""+ObjGrid[row][col].getDownPath().getPheromoneIntensity(), (int)(x1+cellWidth/2), y1);
+					
 				//}
 			}
 		}

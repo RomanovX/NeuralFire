@@ -151,10 +151,13 @@ public class Field {
 		if(hasWall)
 			return Constants.wallColor;
 		
-		if(intensity > 0)
-			return Color.yellow;
+		if(intensity > 0) {
+			int brightness = 255 * intensity / Constants.fireRadius;
+			return new Color(255, 255, brightness);
+		}
 		
 		return Constants.floorColor;
+		
 	}
 	
 	public Field getField(){
