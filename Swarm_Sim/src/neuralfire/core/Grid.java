@@ -118,4 +118,12 @@ public class Grid extends JPanel {
 		return ObjGrid[row][col];
 	}
 	
+	public int getGridRows(){
+		return gridRows;
+	}
+	
+	public int getGridCols(){
+		return gridRows;
+	}
+	
 } // end class Grid

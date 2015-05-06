@@ -19,9 +19,8 @@ public class Fire extends WorldObject{
 		{
 			for(int y = col - 10;y < col + 11; y++)
 			{
-				/*
-				 * erroneous code, temporarily commented out
-				if((x >= 0) && (y >= 0) && (x <= GRIDROWS-1) && (y <= 99))
+
+				if((x >= 0) && (y >= 0) && (x <= grid.getGridRows()-1) && (y <= grid.getGridCols()-1))
 				{
 					dist = Math.abs(row - x) + Math.abs(col - y);
 					if(dist <= 10)
@@ -29,7 +28,6 @@ public class Fire extends WorldObject{
 						grid.getField(row-(row - x), col-(col - y)).setIntencity(dist);
 					}
 				}
-				*/
 			}			
 		}
 		
