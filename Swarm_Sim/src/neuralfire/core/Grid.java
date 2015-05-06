@@ -42,14 +42,14 @@ public class Grid extends JPanel {
 				ObjGrid[i][j] = new Field(i, j, this);
 				if(i-1 >= 0){
 					Path path = new Path(ObjGrid[i][j], ObjGrid[i-1][j]);
-					ObjGrid[i][j].AddPath(path, Constants.Dir.UP);
-					ObjGrid[i-1][j].AddPath(path, Constants.Dir.DOWN);
+					ObjGrid[i][j].AddPath(path, Constants.Dir.DOWN);
+					ObjGrid[i-1][j].AddPath(path, Constants.Dir.UP);
 					
 				}
 				if(j-1 >= 0){
 					Path path = new Path(ObjGrid[i][j], ObjGrid[i][j-1]);
-					ObjGrid[i][j].AddPath(path, Constants.Dir.LEFT);
-					ObjGrid[i][j-1].AddPath(path, Constants.Dir.RIGHT);
+					ObjGrid[i][j].AddPath(path, Constants.Dir.RIGHT);
+					ObjGrid[i][j-1].AddPath(path, Constants.Dir.LEFT);
 					
 				}
 			}
@@ -99,7 +99,11 @@ public class Grid extends JPanel {
 					*/
 					//g.drawChars(new char[]{'t'}, 1, 5, x1, y1);
 					g.setColor(Color.black);
-					g.drawString(""+ObjGrid[row][col].getConcentratedPheromoneCount(), x1, y1);
+					//g.drawString(""+ObjGrid[row][col].getConcentratedPheromoneCount(), x1, y1);
+					if(ObjGrid[row][col].getRightPath()  != null)
+						g.drawString(""+ObjGrid[row][col].getRightPath().getPheromoneIntensity(), x1, (int)(y1+cellHeight/2));
+					if(ObjGrid[row][col].getDownPath()  != null)
+						g.drawString(""+ObjGrid[row][col].getDownPath().getPheromoneIntensity(), (int)(x1+cellWidth/2), y1);
 				//}
 			}
 		}
