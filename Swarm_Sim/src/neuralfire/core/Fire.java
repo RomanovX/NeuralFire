@@ -25,7 +25,7 @@ public class Fire extends WorldObject{
 					dist = Math.abs(row - x) + Math.abs(col - y);
 					if(dist <= Constants.fireRadius)
 					{
-						grid.getField(row-(row - x), col-(col - y)).setIntencity(dist);
+						grid.getField(row-(row - x), col-(col - y)).setIntencity(Constants.fireRadius - dist);
 					}
 				}
 			}			
