@@ -208,5 +208,22 @@ public class Field {
 		ObjList = NextIterationObjList;
 		NextIterationObjList = new ArrayList<WorldObject>();
 	}
-	
+
+	public Path getDownPath() {
+		return downPath;
+	}
+
+	public Path getUpPath() {
+		return upPath;
+	}
+
+	public Path getLeftPath() {
+		return leftPath;
+	}
+
+	public Path getRightPath() {
+		return rightPath;
+	}
+
+
 }

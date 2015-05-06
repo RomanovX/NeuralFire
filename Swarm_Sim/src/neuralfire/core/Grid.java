@@ -81,6 +81,7 @@ public class Grid extends JPanel {
 					g.fillRect( x1, y1, (x2-x1), (y2-y1) );
 					
 					// Debug path code
+					/*
 					if(ObjGrid[row][col].getPath(Constants.Dir.LEFT) != null){
 						int curX = x1 + (x2-x1)/2;
 						int curY = y1 + (y2-y1)/2;
@@ -95,7 +96,9 @@ public class Grid extends JPanel {
 						g.setColor(new Color(0, 0, 255));
 						g.drawLine(curX, curY, curX, neighborY);
 					}
+					*/
 					//g.drawChars(new char[]{'t'}, 1, 5, x1, y1);
+					g.setColor(Color.black);
 					g.drawString(""+ObjGrid[row][col].getConcentratedPheromoneCount(), x1, y1);
 				//}
 			}
