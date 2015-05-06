@@ -1,6 +1,8 @@
 package neuralfire.core;
 
 public class Fire extends WorldObject{
+	private final static int fireRadius = 4;
+	
 	public Fire(){
 		movable = false;
 		stackable = false;
@@ -15,15 +17,15 @@ public class Fire extends WorldObject{
 	{
 		int dist = 0;
 		
-		for(int x = row - 10;x < row + 11; x++)
+		for(int x = row - fireRadius;x < row + fireRadius+1; x++)
 		{
-			for(int y = col - 10;y < col + 11; y++)
+			for(int y = col - fireRadius;y < col + fireRadius+1; y++)
 			{
 
 				if((x >= 0) && (y >= 0) && (x <= grid.getGridRows()-1) && (y <= grid.getGridCols()-1))
 				{
 					dist = Math.abs(row - x) + Math.abs(col - y);
-					if(dist <= 10)
+					if(dist <= fireRadius)
 					{
 						grid.getField(row-(row - x), col-(col - y)).setIntencity(dist);
 					}
