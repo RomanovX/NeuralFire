@@ -13,6 +13,9 @@ public class Constants {
 	public static Color backgroundColor = Color.white;
 	
 	public static int preferredSquareSize = 10;
+	public static int pheromoneIncrease = 5;
+	
+	public static int scaleUI = 5;
 	
 	public static int sleepDuration = 200;
 	

@@ -40,10 +40,22 @@ public class Grid extends JPanel {
 			for(int j = 0; j < gridCols; j++)
 			{
 				ObjGrid[i][j] = new Field(i, j, this);
+				if(i-1 >= 0){
+					Path path = new Path(ObjGrid[i][j], ObjGrid[i-1][j]);
+					ObjGrid[i][j].AddPath(path, Constants.Dir.DOWN);
+					ObjGrid[i-1][j].AddPath(path, Constants.Dir.UP);
+					
+				}
+				if(j-1 >= 0){
+					Path path = new Path(ObjGrid[i][j], ObjGrid[i][j-1]);
+					ObjGrid[i][j].AddPath(path, Constants.Dir.RIGHT);
+					ObjGrid[i][j-1].AddPath(path, Constants.Dir.LEFT);
+					
+				}
 			}
 		}
 		
-		setPreferredSize( new Dimension(preferredSquareSize*columns, preferredSquareSize*rows) );
+		setPreferredSize( new Dimension(preferredSquareSize*columns*Constants.scaleUI, preferredSquareSize*rows*Constants.scaleUI) );
 		setBackground(Constants.backgroundColor); // Set the background color for this panel.		
 	}
 	
@@ -60,14 +72,39 @@ public class Grid extends JPanel {
 		double cellHeight = (double)getHeight() / gridRows;
 		for (row = 0; row < gridRows; row++) {
 			for (col = 0; col < gridCols; col++) {
-				if (ObjGrid[row][col].GetColor() != Color.white) {
+				//if (ObjGrid[row][col].GetColor() != Color.white) {
 					int x1 = (int)(col*cellWidth);
 					int y1 = (int)(row*cellHeight);
 					int x2 = (int)((col+1)*cellWidth);
 					int y2 = (int)((row+1)*cellHeight);
 					g.setColor(ObjGrid[row][col].GetColor());
 					g.fillRect( x1, y1, (x2-x1), (y2-y1) );
-				}
+					
+					// Debug path code
+					/*
+					if(ObjGrid[row][col].getPath(Constants.Dir.LEFT) != null){
+						int curX = x1 + (x2-x1)/2;
+						int curY = y1 + (y2-y1)/2;
+						int neighborX = (int) (curX - cellWidth);
+						g.setColor(new Color(0, 0, 255));
+						g.drawLine(curX, curY, neighborX, curY);
+					}
+					if(ObjGrid[row][col].getPath(Constants.Dir.UP) != null){
+						int curX = x1 + (x2-x1)/2;
+						int curY = y1 + (y2-y1)/2;
+						int neighborY = (int) (curY - cellHeight);
+						g.setColor(new Color(0, 0, 255));
+						g.drawLine(curX, curY, curX, neighborY);
+					}
+					*/
+					//g.drawChars(new char[]{'t'}, 1, 5, x1, y1);
+					g.setColor(Color.black);
+					//g.drawString(""+ObjGrid[row][col].getConcentratedPheromoneCount(), x1, y1);
+					if(ObjGrid[row][col].getRightPath()  != null)
+						g.drawString(""+ObjGrid[row][col].getRightPath().getPheromoneIntensity(), x1, (int)(y1+cellHeight/2));
+					if(ObjGrid[row][col].getDownPath()  != null)
+						g.drawString(""+ObjGrid[row][col].getDownPath().getPheromoneIntensity(), (int)(x1+cellWidth/2), y1);
+				//}
 			}
 		}
 		if (lineColor != null) {

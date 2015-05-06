@@ -14,6 +14,10 @@ public class Field {
 	private boolean hasFire;
 	private boolean hasDroid;
 	private boolean hasWall;
+	private Path upPath;
+	private Path downPath;
+	private Path leftPath;
+	private Path rightPath;
 	
 	public Field(int Row,int Col, Grid thisGrid){
 		intensity = 0;
@@ -23,6 +27,91 @@ public class Field {
 		col = Col;
 		row = Row;
 		grid = thisGrid;
+		upPath = null;
+		downPath = null;
+		leftPath = null;
+		rightPath = null;
+	}
+	
+	public void AddPath(Path path, Constants.Dir dir){
+		switch(dir){
+		case UP:
+			upPath = path;
+			break;
+		case DOWN:
+			downPath = path;
+			break;
+		case LEFT:
+			leftPath = path;
+			break;
+		case RIGHT:
+			rightPath = path;
+			break;
+		}
+	}
+	
+	public void traversePath(Constants.Dir dir, WorldObject traversingObject){
+		switch(dir){
+		case UP:
+			if(upPath != null && upPath.getOtherField(this).getPasseble()){
+				upPath.getOtherField(this).AddObject(traversingObject);
+				upPath.incresePheromoneIntensity(Constants.pheromoneIncrease);
+			} else{
+				this.AddObject(traversingObject);
+			}
+			break;
+		case DOWN:
+			if(downPath != null && downPath.getOtherField(this).getPasseble()){
+				downPath.getOtherField(this).AddObject(traversingObject);
+				downPath.incresePheromoneIntensity(Constants.pheromoneIncrease);
+			} else{
+				this.AddObject(traversingObject);
+			}
+			break;
+		case LEFT:
+			if(leftPath != null && leftPath.getOtherField(this).getPasseble()){
+				leftPath.getOtherField(this).AddObject(traversingObject);
+				leftPath.incresePheromoneIntensity(Constants.pheromoneIncrease);
+			} else{
+				this.AddObject(traversingObject);
+			}
+			break;
+		case RIGHT:
+			if(rightPath != null && rightPath.getOtherField(this).getPasseble()){
+				rightPath.getOtherField(this).AddObject(traversingObject);
+				rightPath.incresePheromoneIntensity(Constants.pheromoneIncrease);
+			} else{
+				this.AddObject(traversingObject);
+			}
+			break;
+		}
+	}
+	
+	public int getConcentratedPheromoneCount(){
+		int total = 0;
+		if(downPath != null)
+			total = total + downPath.getPheromoneIntensity();
+		if(upPath != null)
+			total = total + upPath.getPheromoneIntensity();
+		if(leftPath != null)
+			total = total + leftPath.getPheromoneIntensity();
+		if(rightPath != null)
+			total = total + rightPath.getPheromoneIntensity();
+		return total;
+	}
+	
+	public Path getPath(Constants.Dir dir){
+		switch(dir){
+		case UP:
+			return upPath;
+		case DOWN:
+			return downPath;
+		case LEFT:
+			return leftPath;
+		case RIGHT:
+			return rightPath;
+		}
+		return null;
 	}
 	
 	public void AddObject(WorldObject x)	{
@@ -78,16 +167,16 @@ public class Field {
 		
 		switch(dir){
 		case UP:
-			AdjField = grid.getField(row, col +1);
+			AdjField = grid.getField(row-1, col);
 			break;
 		case DOWN:
-			AdjField = grid.getField(row, col -1);
+			AdjField = grid.getField(row+1, col);
 			break;
 		case LEFT:
-			AdjField = grid.getField(row -1, col);
+			AdjField = grid.getField(row, col-1);
 			break;
 		case RIGHT:
-			AdjField = grid.getField(row +1, col);
+			AdjField = grid.getField(row, col+1);
 			break;
 		default:
 			AdjField = grid.getField(row , col);
@@ -119,5 +208,22 @@ public class Field {
 		ObjList = NextIterationObjList;
 		NextIterationObjList = new ArrayList<WorldObject>();
 	}
-	
+
+	public Path getDownPath() {
+		return downPath;
+	}
+
+	public Path getUpPath() {
+		return upPath;
+	}
+
+	public Path getLeftPath() {
+		return leftPath;
+	}
+
+	public Path getRightPath() {
+		return rightPath;
+	}
+
+
 }
