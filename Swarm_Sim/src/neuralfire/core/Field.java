@@ -9,8 +9,9 @@ public class Field {
 	private ArrayList<WorldObject> NextIterationObjList = new ArrayList<WorldObject>();
 	private double intensity;
 	private double volume;
-	int col;
-	int row;
+	private int col;
+	private int row;
+	private int droidCounter;
 	private Grid grid; /*grid this field is part of*/
 	private boolean hasFire;
 	private boolean hasDroid;
@@ -26,6 +27,7 @@ public class Field {
 		hasFire = false;
 		hasDroid = false;
 		hasWall = false;
+		droidCounter = 0;
 		col = Col;
 		row = Row;
 		grid = thisGrid;
@@ -177,10 +179,16 @@ public class Field {
 	
 	public void AddObject(WorldObject x)	{
 		NextIterationObjList.add(x);
+		/*if(x instanceof Droid)
+			droidCounter++;
+		*/
 	}
 	
 	public void RemoveObjext(WorldObject x)	{
 		ObjList.remove(x);
+		/*if(x instanceof Droid)
+			droidCounter--;
+			*/
 	}
 	
 	public void relay(Grid grid){
@@ -303,8 +311,15 @@ public class Field {
 	
 	public void finalizeFieldUpdate()
 	{
+		droidCounter = 0;
 		ObjList = NextIterationObjList;
 		NextIterationObjList = new ArrayList<WorldObject>();
+		
+		for(WorldObject wo : this.ObjList){
+			if(wo instanceof Droid)
+				droidCounter++;
+		}
+		
 	}
 
 	public Path getDownPath() {
@@ -321,6 +336,11 @@ public class Field {
 
 	public Path getRightPath() {
 		return rightPath;
+	}
+
+
+	public int getDroidCounter() {
+		return droidCounter;
 	}
 
 

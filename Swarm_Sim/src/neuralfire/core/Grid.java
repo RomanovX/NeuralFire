@@ -90,6 +90,15 @@ public class Grid extends JPanel implements ILosBoard {
 				g.setColor(ObjGrid[row][col].GetColor());
 				g.fillRect(x1, y1, (x2 - x1), (y2 - y1));
 
+				if (ObjGrid[row][col].getDroidCounter() > 1) 
+				{
+					g.setColor(new Color(0, 0, 255));
+					g.drawString("" + ObjGrid[row][col].getDroidCounter(),
+							(int) (x1 + cellWidth / 2),
+							(int) (y1 + cellHeight / 2));
+
+				}
+
 				// Debug path code
 				if (Constants.debug) {
 					if (ObjGrid[row][col].getPath(Constants.Dir.LEFT) != null) {
@@ -111,6 +120,7 @@ public class Grid extends JPanel implements ILosBoard {
 					g.setColor(Color.blue);
 					// g.drawString(""+ObjGrid[row][col].getConcentratedPheromoneCount(),
 					// x1, y1);
+					
 					if (ObjGrid[row][col].getVolume() > 0)
 						g.drawString("" + ObjGrid[row][col].getVolume(),
 								(int) (x1 + cellWidth / 2),
@@ -143,6 +153,7 @@ public class Grid extends JPanel implements ILosBoard {
 	}
 
 	public void Spin(Grid grid) {
+		repaint();
 		clearYelling();
 		for (int k = 0; k < Constants.relays; k++) {
 			for (int i = 0; i < gridRows; i++) {
@@ -167,7 +178,7 @@ public class Grid extends JPanel implements ILosBoard {
 				ObjGrid[i][j].finalizeFieldUpdate();
 			}
 		}
-		repaint();
+		
 	}
 
 	public void AddObject(int row, int col, WorldObject x) {

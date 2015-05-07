@@ -16,7 +16,6 @@ public class Droid extends WorldObject{
 			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getIntensity());
 		}
 		else if (followYelling(grid, row, col)){
-			System.out.println("yelling");
 			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getVolume());
 		} 
 	}
