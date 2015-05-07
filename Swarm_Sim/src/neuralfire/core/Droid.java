@@ -18,23 +18,28 @@ public class Droid extends WorldObject{
 		Constants.Dir chosenDirection;
 		
 		
-		/*
-		 * TODO include this once firewalk is implemented
+		
+		// TODO include this once firewalk is implemented
 		if(doPathExploration(currField))
 			chosenDirection = computePathExplorationMove(currField);
 		else
-			chosenDirection = computeFireWalk(currField);
-		*/
+			chosenDirection = computeFireWalk(grid, row, col);
+		
 		// TODO remove this once firewalk is implemented:
-		chosenDirection = computePathExplorationMove(currField);
+		// chosenDirection = computePathExplorationMove(currField);
 		
 		
 		move(chosenDirection,currField);
 	}
 	
-	private Constants.Dir computeFireWalk(Field currentField){
+	private Constants.Dir computeFireWalk(Grid grid, int row, int col){
 		// TODO implement
+		
+		this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getIntensity());
+				
 		return Constants.Dir.DOWN;
+		
+		
 	}
 	
 	private boolean doPathExploration(Field currentField){
@@ -104,4 +109,6 @@ public class Droid extends WorldObject{
 	{
 		field.traversePath(dir, this);
 	}
+	
+
 }

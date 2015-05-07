@@ -19,7 +19,7 @@ public class WorldObject {
 		return this.movable;
 	}
 	
-	public void spreadIntensity(Grid grid,int row, int col, int radius, int intensity) 
+	public void spread(Grid grid,int row, int col, int radius, int intensity) 
 	{
 		int dist = 0;
 		
@@ -33,7 +33,14 @@ public class WorldObject {
 					dist = Math.abs(row - x) + Math.abs(col - y);
 					if(dist <= radius)
 					{
-						grid.getField(row-(row - x), col-(col - y)).setIntencity(intensity - dist);
+						if(grid.getField(row, col).isHasFire())
+						{
+							grid.getField(row-(row - x), col-(col - y)).setIntensity(intensity - dist);
+						}
+						if(grid.getField(row, col).isHasDroid())
+						{
+							grid.getField(row-(row - x), col-(col - y)).setVolume(intensity - dist);
+						}
 					}
 				}
 			}			

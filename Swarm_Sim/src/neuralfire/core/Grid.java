@@ -123,6 +123,7 @@ public class Grid extends JPanel {
 		
 	public void Spin(Grid grid)
 	{
+		clearYelling();
 		for(int i = 0; i < gridRows; i++)
 		{
 			for(int j = 0; j < gridCols; j++)
@@ -161,7 +162,17 @@ public class Grid extends JPanel {
 	}
 	
 	public int getGridCols(){
-		return gridRows;
+		return gridCols;
 	}
 	
+	private void clearYelling()
+	{
+		for(int x = 0;x < gridRows; x++)
+		{
+			for(int y = 0;y < gridCols; y++)
+			{
+				ObjGrid[x][y].clearVolume();
+			}
+		}
+	}
 } // end class Grid

@@ -13,7 +13,7 @@ public class Fire extends WorldObject{
 	
 	public void runAI(Grid grid,int row, int col)
 	{	
-		this.spreadIntensity(grid, row, col, Constants.fireRadius, Constants.fireIntensity);
+		this.spread(grid, row, col, Constants.fireRadius, Constants.fireIntensity);
 		grid.getField(row, col).AddObject(this);		
 	}
 	

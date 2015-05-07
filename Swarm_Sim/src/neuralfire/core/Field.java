@@ -8,6 +8,7 @@ public class Field {
 	private ArrayList<WorldObject> ObjList = new ArrayList<WorldObject>();
 	private ArrayList<WorldObject> NextIterationObjList = new ArrayList<WorldObject>();
 	private int intensity;
+	private int volume;
 	int col;
 	int row;
 	private Grid grid; /*grid this field is part of*/
@@ -21,6 +22,7 @@ public class Field {
 	
 	public Field(int Row,int Col, Grid thisGrid){
 		intensity = 0;
+		volume = 0;
 		hasFire = false;
 		hasDroid = false;
 		hasWall = false;
@@ -33,6 +35,37 @@ public class Field {
 		rightPath = null;
 	}
 	
+	
+	public boolean isHasFire() {
+		return hasFire;
+	}
+
+
+	public void setHasFire(boolean hasFire) {
+		this.hasFire = hasFire;
+	}
+
+
+	public boolean isHasDroid() {
+		return hasDroid;
+	}
+
+
+	public void setHasDroid(boolean hasDroid) {
+		this.hasDroid = hasDroid;
+	}
+
+
+	public boolean isHasWall() {
+		return hasWall;
+	}
+
+
+	public void setHasWall(boolean hasWall) {
+		this.hasWall = hasWall;
+	}
+
+
 	public void AddPath(Path path, Constants.Dir dir){
 		switch(dir){
 		case UP:
@@ -162,12 +195,19 @@ public class Field {
 			return Constants.fireColor;
 		
 		if(hasWall)
-			return Constants.wallColor;
-		
+			return Constants.wallColor;	
+
 		if(intensity > 0) {
 			int brightness = 255 - (255 * intensity / Constants.fireIntensity);
 			return new Color(255, 255, brightness);
 		}
+		
+		if(volume > 0) {
+			int brightness = 255 - (255 * volume / Constants.fireIntensity);
+			return new Color(brightness, brightness, 255);
+		}
+		
+		
 		
 		return Constants.floorColor;
 		
@@ -201,20 +241,34 @@ public class Field {
 		
 	}
 	
-	public void setIntencity(int x)
+	public void setIntensity(int x)
 	{
 		if (intensity < x)
 			intensity = x;
 	}
 	
-	public int getIntencity()
-	{
+	public int getIntensity() {
 		return intensity;
 	}
 	
-	public void clearIntencity(int x)
+	public void clearIntensity()
 	{
 		intensity = 0;
+	}
+	
+	public void setVolume(int x)
+	{
+		if (volume < x)
+			volume = x;
+	}
+	
+	public int getVolume() {
+		return volume;
+	}
+	
+	public void clearVolume()
+	{
+		volume = 0;
 	}
 	
 	public boolean getPasseble()
@@ -247,9 +301,7 @@ public class Field {
 		return rightPath;
 	}
 
-	public int getIntensity() {
-		return intensity;
-	}
+
 
 	
 }
