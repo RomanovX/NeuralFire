@@ -22,6 +22,6 @@ public class Constants {
 	public static enum Dir {
 		UP, DOWN, LEFT, RIGHT 
 	}
-
 	public static int fireRadius = 5;
+	public static int fireIntensity = 2 * fireRadius;;
 }

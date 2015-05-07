@@ -99,6 +99,7 @@ public class Droid extends WorldObject{
 		return direction;
 	}
 	
+	
 	private void move(Constants.Dir dir, Field field)
 	{
 		field.traversePath(dir, this);
