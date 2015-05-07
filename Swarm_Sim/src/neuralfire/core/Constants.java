@@ -12,8 +12,10 @@ public class Constants {
 	public static Color lineColor = Color.black;
 	public static Color backgroundColor = Color.white;
 	
+	public static boolean debug = false;
+	
 	public static int preferredSquareSize = 10;
-	public static int pheromoneIncrease = 5;
+	public static int pheromoneIncrease = 50;
 	
 	public static int scaleUI = 5;
 	
@@ -23,6 +25,6 @@ public class Constants {
 		UP, DOWN, LEFT, RIGHT, STAY 
 	}
 	public static int fireRadius = 3;
-	public static int yellRadius = 5;
-	public static int fireIntensity = fireRadius + 3*yellRadius;;
+	public static int yellRadius = 6;
+	public static int fireIntensity = fireRadius + 2*yellRadius;;
 }
