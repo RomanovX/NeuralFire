@@ -149,7 +149,7 @@ public class Field {
 	}
 	
 	public int getPerceivedVolume(){
-		int total = intensity;
+		int total = volume;
 		if(downPath != null)
 			total = total + downPath.getOtherField(this).getVolume();
 		if(upPath != null)
@@ -183,7 +183,7 @@ public class Field {
 		ObjList.remove(x);
 	}
 	
-	public void UpdateField(Grid grid)	{
+	public void relay(Grid grid){
 		hasFire = false;
 		hasDroid = false;
 		hasWall = false;
@@ -197,7 +197,14 @@ public class Field {
 			
 			if(x instanceof Wall)
 				hasWall = true;
-				
+			
+			x.relay(grid,row,col);
+		}
+	}
+	
+	public void UpdateField(Grid grid)	{
+		
+		for(WorldObject x: ObjList){
 			x.runAI(grid,row,col);
 		}
 	}

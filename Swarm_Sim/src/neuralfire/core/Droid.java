@@ -10,6 +10,17 @@ public class Droid extends WorldObject{
 		stackable = true;
 	}
 	
+	public void relay(Grid grid,int row, int col){
+		
+		if(doFireWalk(grid, row, col)){
+			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getIntensity());
+		}
+		else if (followYelling(grid, row, col)){
+			System.out.println("yelling");
+			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getVolume());
+		} 
+	}
+	
 	public void runAI(Grid grid,int row, int col)
 	{
 		IWalkAlgorithm walk;
@@ -20,7 +31,7 @@ public class Droid extends WorldObject{
 			walk = new FireWalk();
 		}
 		else if (followYelling(grid, row, col)){
-			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getVolume());
+			//this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getVolume());
 			walk = new YellWalk();
 		}
 		else

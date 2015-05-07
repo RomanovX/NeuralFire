@@ -14,7 +14,7 @@ public class Main {
 		window = new JFrame("Grid");  // Create a window with "Grid" in the title bar.
 		
 		EnvironmentParser envParser = new EnvironmentParser();
-		Grid grid = envParser.parseImage("../../environmentMaps/map1.bmp");
+		Grid grid = envParser.parseImage("../../environmentMaps/map2.bmp");
 		
 		window.setContentPane(grid);  // Add the Grid panel to the window.
 		window.pack(); // Set the size of the window based on the panel's preferred size.

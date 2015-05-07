@@ -17,15 +17,15 @@ public class Constants {
 	public static int preferredSquareSize = 10;
 	public static int pheromoneIncrease = 50;
 	
-	public static int scaleUI = 5;
+	public static int scaleUI = 1;
 	
-	public static int sleepDuration = 200;
+	public static int sleepDuration = 20;
 	
 	public static enum Dir {
 		UP, DOWN, LEFT, RIGHT, STAY 
 	}
-	public static int fireRadius = 7;
-	public static int yellRadius = 3;
+	public static int fireRadius = 10;
+	public static int yellRadius = 20;
 	public static int relays = 2;
 	public static int fireIntensity = fireRadius + relays*yellRadius;;
 }

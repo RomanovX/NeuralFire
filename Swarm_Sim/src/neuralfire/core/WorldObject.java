@@ -13,6 +13,9 @@ public class WorldObject {
 	{
 		
 	}
+	public void relay(Grid grid,int row, int col){
+		
+	}
 	
 	public boolean getMovable()
 	{

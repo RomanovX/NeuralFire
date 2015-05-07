@@ -100,6 +100,8 @@ public class Grid extends JPanel {
 					//g.drawChars(new char[]{'t'}, 1, 5, x1, y1);
 					g.setColor(Color.blue);
 					//g.drawString(""+ObjGrid[row][col].getConcentratedPheromoneCount(), x1, y1);
+					if(ObjGrid[row][col].getVolume()  > 0 )
+						g.drawString(""+ObjGrid[row][col].getVolume(), (int)(x1+cellWidth/2), (int)(y1+cellHeight/2));
 					if(Constants.debug){
 						if(ObjGrid[row][col].getRightPath()  != null)
 							g.drawString(""+ObjGrid[row][col].getRightPath().getPheromoneIntensity(), x1, (int)(y1+cellHeight/2));
@@ -125,6 +127,16 @@ public class Grid extends JPanel {
 		
 	public void Spin(Grid grid)
 	{
+		clearYelling();
+		for (int k = 0; k < Constants.relays; k++){
+			for(int i = 0; i < gridRows; i++)
+			{
+				for(int j = 0; j < gridCols; j++)
+				{
+					ObjGrid[i][j].relay(grid);
+				}
+			}
+		}
 		
 		for(int i = 0; i < gridRows; i++)
 		{
@@ -147,7 +159,6 @@ public class Grid extends JPanel {
 			}
 		}
 		repaint();
-		clearYelling();
 	}
 	
 	public void AddObject(int row, int col, WorldObject x)
