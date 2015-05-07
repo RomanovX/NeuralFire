@@ -1,5 +1,8 @@
 package neuralfire.core;
 
+import rlforj.los.ILosAlgorithm;
+import rlforj.los.PrecisePermissive;
+
 public class WorldObject {
 	protected boolean movable;
 	protected boolean stackable;
@@ -25,6 +28,8 @@ public class WorldObject {
 	public void spread(Grid grid,int row, int col, int radius, int intensity) 
 	{
 		int dist = 0;
+		ILosAlgorithm a=new PrecisePermissive();
+		
 		
 		for(int x = row - radius;x < row + radius+1; x++)
 		{
@@ -34,7 +39,8 @@ public class WorldObject {
 				if((x >= 0) && (y >= 0) && (x <= grid.getGridRows()-1) && (y <= grid.getGridCols()-1))
 				{
 					dist = Math.abs(row - x) + Math.abs(col - y);
-					if(dist <= radius)
+					if(dist <= radius && a.existsLineOfSight(grid, row, col, x, y, false))
+					//if(dist <= radius)
 					{
 						if(grid.getField(row, col).isHasFire())
 						{

@@ -1,0 +1,52 @@
+8
+
+dir
+13
+https://rlforj.svn.sourceforge.net/svnroot/rlforj/trunk/src/rlforj/ui/ascii
+https://rlforj.svn.sourceforge.net/svnroot/rlforj
+
+
+
+2008-01-28T00:42:49.732719Z
+13
+datta_sid
+
+
+svn:special svn:externals svn:needs-lock
+
+ICharDisplayable.java
+file
+
+
+
+
+2008-01-22T04:45:26.734375Z
+20d562e90308d44416990024341a97c9
+2008-01-28T00:42:49.732719Z
+13
+datta_sid
+
+CharVisual.java
+file
+
+
+
+
+2008-01-27T03:57:23.156250Z
+6af9939349e7396b57499d3caaff6864
+2008-01-28T00:42:49.732719Z
+13
+datta_sid
+
+CharVisualCanvas.java
+file
+14
+
+
+
+2008-01-29T03:46:18.734375Z
+51379c6e810f7fccffc65a3322cc5230
+2008-02-01T02:08:32.333292Z
+14
+datta_sid
+

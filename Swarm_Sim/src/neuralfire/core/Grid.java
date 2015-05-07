@@ -6,12 +6,15 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import rlforj.los.ILosBoard;
+
+
 /**
  * This class represents a "panel" that displays a grid of colored squares.
  * The class also include a main() routine that creates a window containing
  * a panel of this type.
  */
-public class Grid extends JPanel {
+public class Grid extends JPanel implements ILosBoard {
 
 	private int gridRows; // Number of rows of squares.
 	private int gridCols; // Number of columns of squares.
@@ -188,5 +191,20 @@ public class Grid extends JPanel {
 				ObjGrid[x][y].clearVolume();
 			}
 		}
+	}
+
+	@Override
+	public boolean boardContains(int x, int y) {
+		return x > 0 && y > 0 && x < gridCols && y < gridRows;
+	}
+
+	@Override
+	public boolean isObstacle(int x, int y) {
+		return ObjGrid[x][y].isHasWall();
+	}
+
+	@Override
+	public void visit(int x, int y) {
+		
 	}
 } // end class Grid

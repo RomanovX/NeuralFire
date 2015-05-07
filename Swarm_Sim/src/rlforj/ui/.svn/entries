@@ -1,0 +1,55 @@
+8
+
+dir
+12
+https://rlforj.svn.sourceforge.net/svnroot/rlforj/trunk/src/rlforj/ui
+https://rlforj.svn.sourceforge.net/svnroot/rlforj
+
+
+
+2008-01-28T00:39:06.496145Z
+12
+datta_sid
+
+
+svn:special svn:externals svn:needs-lock
+
+Visual.java
+file
+13
+
+
+
+2008-01-27T03:56:57.453125Z
+d180404784e9d4a5dcfdc3eb1192aff2
+2008-01-28T00:42:49.732719Z
+13
+datta_sid
+
+ascii
+dir
+
+ITileInfoProvider.java
+file
+13
+
+
+
+2008-01-22T04:42:58.875000Z
+e2f364c787c31263f97b12d1ab5aa96c
+2008-01-28T00:42:49.732719Z
+13
+datta_sid
+
+MultiLineToolTip.java
+file
+13
+
+
+
+2008-01-27T03:55:32.000000Z
+90d46858faacb7325f8c8e5e06d11ea2
+2008-01-28T00:42:49.732719Z
+13
+datta_sid
+

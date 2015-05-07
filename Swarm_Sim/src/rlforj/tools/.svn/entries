@@ -1,0 +1,52 @@
+8
+
+dir
+14
+https://rlforj.svn.sourceforge.net/svnroot/rlforj/trunk/src/rlforj/tools
+https://rlforj.svn.sourceforge.net/svnroot/rlforj
+
+
+
+2008-02-01T02:08:32.333292Z
+14
+datta_sid
+
+
+svn:special svn:externals svn:needs-lock
+
+CharChooser.java
+file
+
+
+
+
+2008-01-31T19:55:29.000000Z
+fb4c64e711e760c9dd6428f708aada8e
+2008-02-01T02:08:32.333292Z
+14
+datta_sid
+
+FontChooser.java
+file
+
+
+
+
+2008-01-31T19:34:23.328125Z
+616b0932a3859ccc20950c8fe4efed92
+2008-02-01T02:08:32.333292Z
+14
+datta_sid
+
+CharDesigner.java
+file
+
+
+
+
+2008-01-31T22:27:02.546875Z
+e5eff1dc9d6690f5ee81cc711fb50d84
+2008-02-01T02:08:32.333292Z
+14
+datta_sid
+
