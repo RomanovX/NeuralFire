@@ -9,7 +9,7 @@ public class FireWalk implements IWalkAlgorithm {
 		
 		
 		Field currentField = grid.getField(row, col); 
-		int maxIntensity = grid.getField(row, col).getIntensity();;
+		double maxIntensity = grid.getField(row, col).getIntensity();;
 		Constants.Dir chosenDir = Constants.Dir.STAY;
 		
 		if(currentField.getUpPath() != null 

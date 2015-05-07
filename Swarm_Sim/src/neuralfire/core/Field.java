@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class Field {
 	private ArrayList<WorldObject> ObjList = new ArrayList<WorldObject>();
 	private ArrayList<WorldObject> NextIterationObjList = new ArrayList<WorldObject>();
-	private int intensity;
-	private int volume;
+	private double intensity;
+	private double volume;
 	int col;
 	int row;
 	private Grid grid; /*grid this field is part of*/
@@ -135,28 +135,28 @@ public class Field {
 		return total;
 	}
 	
-	public int getPerceivedFireIntensity(){
-		int total = intensity;
-		if(downPath != null)
+	public double getPerceivedFireIntensity(){
+		double total = intensity;
+		if(downPath != null && downPath.getOtherField(this).getPasseble())
 			total = total + downPath.getOtherField(this).getIntensity();
-		if(upPath != null)
+		if(upPath != null && upPath.getOtherField(this).getPasseble())
 			total = total + upPath.getOtherField(this).getIntensity();
-		if(leftPath != null)
+		if(leftPath != null && leftPath.getOtherField(this).getPasseble())
 			total = total + leftPath.getOtherField(this).getIntensity();
-		if(rightPath != null)
+		if(rightPath != null && rightPath.getOtherField(this).getPasseble())
 			total = total + rightPath.getOtherField(this).getIntensity();
 		return total;
 	}
 	
-	public int getPerceivedVolume(){
-		int total = volume;
-		if(downPath != null)
+	public double getPerceivedVolume(){
+		double total = volume;
+		if(downPath != null && downPath.getOtherField(this).getPasseble())
 			total = total + downPath.getOtherField(this).getVolume();
-		if(upPath != null)
+		if(upPath != null && upPath.getOtherField(this).getPasseble())
 			total = total + upPath.getOtherField(this).getVolume();
-		if(leftPath != null)
+		if(leftPath != null && leftPath.getOtherField(this).getPasseble())
 			total = total + leftPath.getOtherField(this).getVolume();
-		if(rightPath != null)
+		if(rightPath != null && rightPath.getOtherField(this).getPasseble())
 			total = total + rightPath.getOtherField(this).getVolume();
 		return total;
 	}
@@ -220,12 +220,12 @@ public class Field {
 			return Constants.wallColor;	
 
 		if(intensity > 0) {
-			int brightness = 255 - (255 * intensity / Constants.fireIntensity);
+			int brightness = (int) (255 - (255 * intensity / Constants.fireIntensity));
 			return new Color(255, 255, brightness);
 		}
 		
 		if(volume > 0) {
-			int brightness = 255 - (255 * volume / Constants.fireIntensity);
+			int brightness = (int) (255 - (255 * volume / Constants.fireIntensity));
 			return new Color(brightness, brightness, 255);
 		}
 		
@@ -263,13 +263,13 @@ public class Field {
 		
 	}
 	
-	public void setIntensity(int x)
+	public void setIntensity(double x)
 	{
 		if (intensity < x)
 			intensity = x;
 	}
 	
-	public int getIntensity() {
+	public double getIntensity() {
 		return intensity;
 	}
 	
@@ -278,19 +278,19 @@ public class Field {
 		intensity = 0;
 	}
 	
-	public void setVolume(int x)
+	public void setVolume(double x)
 	{
 		if (volume < x)
 			volume = x;
 	}
 	
-	public int getVolume() {
+	public double getVolume() {
 		return volume;
 	}
 	
 	public void clearVolume()
 	{
-		volume = 0;
+		volume = volume/Constants.volumeDecay < Constants.volumeDecayThreshold ? 0 : volume/Constants.volumeDecay;
 	}
 	
 	public boolean getPasseble()

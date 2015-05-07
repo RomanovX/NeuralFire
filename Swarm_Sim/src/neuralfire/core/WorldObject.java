@@ -25,7 +25,7 @@ public class WorldObject {
 		return this.movable;
 	}
 	
-	public void spread(Grid grid,int row, int col, int radius, int intensity) 
+	public void spread(Grid grid,int row, int col, int radius, double intensity) 
 	{
 		int dist = 0;
 		ILosAlgorithm a=new PrecisePermissive();
@@ -39,7 +39,7 @@ public class WorldObject {
 				if((x >= 0) && (y >= 0) && (x <= grid.getGridRows()-1) && (y <= grid.getGridCols()-1))
 				{
 					dist = Math.abs(row - x) + Math.abs(col - y);
-					if(dist <= radius && a.existsLineOfSight(grid, row, col, x, y, false))
+					if(dist <= radius && a.existsLineOfSight(grid, row, col, x, y, false) && !grid.getField(x, y).isHasWall())
 					//if(dist <= radius)
 					{
 						if(grid.getField(row, col).isHasFire())

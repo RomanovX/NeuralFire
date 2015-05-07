@@ -7,7 +7,7 @@ public class YellWalk implements IWalkAlgorithm {
 	@Override
 	public Dir performWalk(Grid grid, int row, int col) {
 		Field currentField = grid.getField(row, col); 
-		int maxVolume = grid.getField(row, col).getVolume();;
+		double maxVolume = grid.getField(row, col).getVolume();;
 		Constants.Dir chosenDir = Constants.Dir.STAY;
 		
 		if(currentField.getUpPath() != null 
