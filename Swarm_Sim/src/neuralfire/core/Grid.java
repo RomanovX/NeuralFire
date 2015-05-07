@@ -92,7 +92,7 @@ public class Grid extends JPanel implements ILosBoard {
 
 				if (ObjGrid[row][col].getDroidCounter() > 1) 
 				{
-					g.setColor(new Color(0, 0, 255));
+					g.setColor(new Color(0, 0, 0));
 					g.drawString("" + ObjGrid[row][col].getDroidCounter(),
 							(int) (x1 + cellWidth / 2),
 							(int) (y1 + cellHeight / 2));
