@@ -13,7 +13,37 @@ public class Droid extends WorldObject{
 	public void runAI(Grid grid,int row, int col)
 	{
 		Field currField = grid.getField(row, col);
-		int totalPheromonoe = currField.getConcentratedPheromoneCount();
+		
+		
+		Constants.Dir chosenDirection;
+		
+		
+		/*
+		 * TODO include this once firewalk is implemented
+		if(doPathExploration(currField))
+			chosenDirection = computePathExplorationMove(currField);
+		else
+			chosenDirection = computeFireWalk(currField);
+		*/
+		// TODO remove this once firewalk is implemented:
+		chosenDirection = computePathExplorationMove(currField);
+		
+		
+		move(chosenDirection,currField);
+	}
+	
+	private Constants.Dir computeFireWalk(Field currentField){
+		// TODO implement
+		return Constants.Dir.DOWN;
+	}
+	
+	private boolean doPathExploration(Field currentField){
+		// check if we perceive any fire
+		return currentField.getPerceivedFireIntensity() == 0;
+	}
+	
+	private Constants.Dir computePathExplorationMove(Field currentField){
+		int totalPheromonoe = currentField.getConcentratedPheromoneCount();
 		
 		Random generator = new Random(); 
 		double chosenProb = generator.nextDouble();
@@ -24,29 +54,29 @@ public class Droid extends WorldObject{
 		double downProb = 0.25;
 		double leftProb = 0.25;
 		double rightProb = 0.25;
-		if(currField.getUpPath() != null){
-			double intensity = currField.getUpPath().getPheromoneIntensity() == 0 ? 1 : currField.getUpPath().getPheromoneIntensity();
+		if(currentField.getUpPath() != null && currentField.getUpPath().getOtherField(currentField).getPasseble()){
+			double intensity = currentField.getUpPath().getPheromoneIntensity() == 0 ? 1 : currentField.getUpPath().getPheromoneIntensity();
 			upProb = totalPheromonoe / intensity;
 		}
 		else{
 			upProb = 0;
 		}
-		if(currField.getDownPath() != null){
-			double intensity = currField.getDownPath().getPheromoneIntensity() == 0 ? 1 : currField.getDownPath().getPheromoneIntensity();
+		if(currentField.getDownPath() != null && currentField.getDownPath().getOtherField(currentField).getPasseble()){
+			double intensity = currentField.getDownPath().getPheromoneIntensity() == 0 ? 1 : currentField.getDownPath().getPheromoneIntensity();
 			downProb = totalPheromonoe / intensity;
 		}
 		else{
 			downProb = 0;
 		}
-		if(currField.getLeftPath() != null){
-			double intensity = currField.getLeftPath().getPheromoneIntensity() == 0 ? 1 : currField.getLeftPath().getPheromoneIntensity();
+		if(currentField.getLeftPath() != null && currentField.getLeftPath().getOtherField(currentField).getPasseble()){
+			double intensity = currentField.getLeftPath().getPheromoneIntensity() == 0 ? 1 : currentField.getLeftPath().getPheromoneIntensity();
 			leftProb = totalPheromonoe / intensity;
 		}
 		else{
 			leftProb = 0;
 		}
-		if(currField.getRightPath() != null){
-			double intensity = currField.getRightPath().getPheromoneIntensity() == 0 ? 1 : currField.getRightPath().getPheromoneIntensity();
+		if(currentField.getRightPath() != null && currentField.getRightPath().getOtherField(currentField).getPasseble()){
+			double intensity = currentField.getRightPath().getPheromoneIntensity() == 0 ? 1 : currentField.getRightPath().getPheromoneIntensity();
 			rightProb = totalPheromonoe / intensity;
 		}
 		else{
@@ -66,17 +96,11 @@ public class Droid extends WorldObject{
 		else 
 			direction = Constants.Dir.RIGHT;
 		
-		move(direction,currField);
+		return direction;
 	}
 	
 	private void move(Constants.Dir dir, Field field)
 	{
 		field.traversePath(dir, this);
 	}
-	
-	private void placeFeromone(Field Field, int info)
-	{
-		Field.AddObject(new Pheromone(info));
-	}
-	
 }

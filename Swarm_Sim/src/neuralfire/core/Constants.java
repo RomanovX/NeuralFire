@@ -23,5 +23,5 @@ public class Constants {
 		UP, DOWN, LEFT, RIGHT 
 	}
 
-	public static int fireRadius = 15;;
+	public static int fireRadius = 5;
 }

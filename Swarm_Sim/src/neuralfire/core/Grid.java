@@ -98,7 +98,7 @@ public class Grid extends JPanel {
 					}
 					*/
 					//g.drawChars(new char[]{'t'}, 1, 5, x1, y1);
-					g.setColor(Color.black);
+					g.setColor(Color.blue);
 					//g.drawString(""+ObjGrid[row][col].getConcentratedPheromoneCount(), x1, y1);
 					if(ObjGrid[row][col].getRightPath()  != null)
 						g.drawString(""+ObjGrid[row][col].getRightPath().getPheromoneIntensity(), x1, (int)(y1+cellHeight/2));

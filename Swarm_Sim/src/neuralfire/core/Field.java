@@ -100,6 +100,19 @@ public class Field {
 		return total;
 	}
 	
+	public int getPerceivedFireIntensity(){
+		int total = intensity;
+		if(downPath != null)
+			total = total + downPath.getOtherField(this).getIntensity();
+		if(upPath != null)
+			total = total + upPath.getOtherField(this).getIntensity();
+		if(leftPath != null)
+			total = total + leftPath.getOtherField(this).getIntensity();
+		if(rightPath != null)
+			total = total + rightPath.getOtherField(this).getIntensity();
+		return total;
+	}
+	
 	public Path getPath(Constants.Dir dir){
 		switch(dir){
 		case UP:
@@ -228,5 +241,9 @@ public class Field {
 		return rightPath;
 	}
 
+	public int getIntensity() {
+		return intensity;
+	}
 
+	
 }
