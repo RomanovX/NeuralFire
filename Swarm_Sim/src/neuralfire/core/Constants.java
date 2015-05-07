@@ -26,5 +26,6 @@ public class Constants {
 	}
 	public static int fireRadius = 7;
 	public static int yellRadius = 3;
-	public static int fireIntensity = fireRadius + 2*yellRadius;;
+	public static int relays = 2;
+	public static int fireIntensity = fireRadius + relays*yellRadius;;
 }
