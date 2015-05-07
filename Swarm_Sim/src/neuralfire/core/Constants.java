@@ -20,7 +20,7 @@ public class Constants {
 	public static int sleepDuration = 200;
 	
 	public static enum Dir {
-		UP, DOWN, LEFT, RIGHT 
+		UP, DOWN, LEFT, RIGHT, STAY 
 	}
 	public static int fireRadius = 3;
 	public static int yellRadius = 5;

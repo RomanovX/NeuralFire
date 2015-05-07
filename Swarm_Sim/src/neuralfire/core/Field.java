@@ -117,6 +117,8 @@ public class Field {
 				this.AddObject(traversingObject);
 			}
 			break;
+		case STAY:
+			this.AddObject(traversingObject);
 		}
 	}
 	
