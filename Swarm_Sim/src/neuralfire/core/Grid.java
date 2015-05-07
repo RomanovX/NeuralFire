@@ -125,7 +125,7 @@ public class Grid extends JPanel {
 		
 	public void Spin(Grid grid)
 	{
-		//clearYelling();
+		
 		for(int i = 0; i < gridRows; i++)
 		{
 			for(int j = 0; j < gridCols; j++)
@@ -147,6 +147,7 @@ public class Grid extends JPanel {
 			}
 		}
 		repaint();
+		clearYelling();
 	}
 	
 	public void AddObject(int row, int col, WorldObject x)
