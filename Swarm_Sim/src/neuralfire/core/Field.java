@@ -148,6 +148,19 @@ public class Field {
 		return total;
 	}
 	
+	public int getPerceivedVolume(){
+		int total = intensity;
+		if(downPath != null)
+			total = total + downPath.getOtherField(this).getVolume();
+		if(upPath != null)
+			total = total + upPath.getOtherField(this).getVolume();
+		if(leftPath != null)
+			total = total + leftPath.getOtherField(this).getVolume();
+		if(rightPath != null)
+			total = total + rightPath.getOtherField(this).getVolume();
+		return total;
+	}
+	
 	public Path getPath(Constants.Dir dir){
 		switch(dir){
 		case UP:

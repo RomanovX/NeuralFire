@@ -12,132 +12,38 @@ public class Droid extends WorldObject{
 	
 	public void runAI(Grid grid,int row, int col)
 	{
-		Field currField = grid.getField(row, col);
-		
-		
-		Constants.Dir chosenDirection;
-		
-		
+		IWalkAlgorithm walk;
 		
 		// TODO include this once firewalk is implemented
-		if(doPathExploration(currField))
-			chosenDirection = computePathExplorationMove(currField);
+		if(doFireWalk(grid, row, col)){
+			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getIntensity());
+			walk = new FireWalk();
+		}
+		else if (followYelling(grid, row, col)){
+			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getVolume());
+			walk = new YellWalk();
+		}
 		else
-			chosenDirection = computeFireWalk(grid, row, col);
+			walk = new ExplorationWalk();
 		
-		// TODO remove this once firewalk is implemented:
-		// chosenDirection = computePathExplorationMove(currField);
-		
-		
-		move(chosenDirection,currField);
+		move(walk.performWalk(grid, row, col), grid, row, col);
 	}
 	
-	private Constants.Dir computeFireWalk(Grid grid, int row, int col){
-		// TODO implement
-		
-		this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getIntensity());
-				
-		Field currentField = grid.getField(row, col); 
-		int maxIntensity = grid.getField(row, col).getIntensity();;
-		Constants.Dir chosenDir = Constants.Dir.STAY;
-		
-		if(currentField.getUpPath() != null 
-				&& currentField.getUpPath().getOtherField(currentField).getPasseble() 
-				&& currentField.getUpPath().getOtherField(currentField).getIntensity() > maxIntensity){
-			chosenDir = Constants.Dir.UP;
-			maxIntensity = currentField.getUpPath().getOtherField(currentField).getIntensity();
-		}
-		if(currentField.getDownPath() != null 
-				&& currentField.getDownPath().getOtherField(currentField).getPasseble() 
-				&& currentField.getDownPath().getOtherField(currentField).getIntensity() > maxIntensity){
-			chosenDir = Constants.Dir.DOWN;
-			maxIntensity = currentField.getDownPath().getOtherField(currentField).getIntensity();
-		}
-		if(currentField.getLeftPath() != null 
-				&& currentField.getLeftPath().getOtherField(currentField).getPasseble() 
-				&& currentField.getLeftPath().getOtherField(currentField).getIntensity() > maxIntensity){
-			chosenDir = Constants.Dir.LEFT;
-			maxIntensity = currentField.getLeftPath().getOtherField(currentField).getIntensity();
-		}
-		if(currentField.getRightPath() != null 
-				&& currentField.getRightPath().getOtherField(currentField).getPasseble() 
-				&& currentField.getRightPath().getOtherField(currentField).getIntensity() > maxIntensity){
-			chosenDir = Constants.Dir.RIGHT;
-			maxIntensity = currentField.getRightPath().getOtherField(currentField).getIntensity();
-		}
-		
-		
-		
-		return chosenDir;
-				
-	}
 	
-	private boolean doPathExploration(Field currentField){
+	private boolean doFireWalk(Grid grid,int row, int col){
 		// check if we perceive any fire
-		return currentField.getPerceivedFireIntensity() == 0;
+		return grid.getField(row, col).getPerceivedFireIntensity() > 0;
 	}
 	
-	private Constants.Dir computePathExplorationMove(Field currentField){
-		int totalPheromonoe = currentField.getConcentratedPheromoneCount();
-		
-		Random generator = new Random(); 
-		double chosenProb = generator.nextDouble();
-		Constants.Dir direction = Constants.Dir.UP;
-		
-		
-		double upProb = 0.25;
-		double downProb = 0.25;
-		double leftProb = 0.25;
-		double rightProb = 0.25;
-		if(currentField.getUpPath() != null && currentField.getUpPath().getOtherField(currentField).getPasseble()){
-			double intensity = currentField.getUpPath().getPheromoneIntensity() == 0 ? 1 : currentField.getUpPath().getPheromoneIntensity();
-			upProb = totalPheromonoe / intensity;
-		}
-		else{
-			upProb = 0;
-		}
-		if(currentField.getDownPath() != null && currentField.getDownPath().getOtherField(currentField).getPasseble()){
-			double intensity = currentField.getDownPath().getPheromoneIntensity() == 0 ? 1 : currentField.getDownPath().getPheromoneIntensity();
-			downProb = totalPheromonoe / intensity;
-		}
-		else{
-			downProb = 0;
-		}
-		if(currentField.getLeftPath() != null && currentField.getLeftPath().getOtherField(currentField).getPasseble()){
-			double intensity = currentField.getLeftPath().getPheromoneIntensity() == 0 ? 1 : currentField.getLeftPath().getPheromoneIntensity();
-			leftProb = totalPheromonoe / intensity;
-		}
-		else{
-			leftProb = 0;
-		}
-		if(currentField.getRightPath() != null && currentField.getRightPath().getOtherField(currentField).getPasseble()){
-			double intensity = currentField.getRightPath().getPheromoneIntensity() == 0 ? 1 : currentField.getRightPath().getPheromoneIntensity();
-			rightProb = totalPheromonoe / intensity;
-		}
-		else{
-			rightProb = 0;
-		}
-		double weightedProb = upProb + downProb + leftProb + rightProb;
-		upProb /= weightedProb;
-		downProb /= weightedProb;
-		leftProb /= weightedProb;
-		rightProb /= weightedProb;
-		if(chosenProb < upProb)
-			direction = Constants.Dir.UP;
-		else if (chosenProb < upProb+downProb )
-			direction = Constants.Dir.DOWN;
-		else if (chosenProb < upProb+downProb+leftProb)
-			direction = Constants.Dir.LEFT;
-		else 
-			direction = Constants.Dir.RIGHT;
-		
-		return direction;
+	private boolean followYelling(Grid grid,int row, int col){
+		// check if we perceive any fire
+		return grid.getField(row, col).getPerceivedVolume() > 0;
 	}
 	
 	
-	private void move(Constants.Dir dir, Field field)
+	private void move(Constants.Dir dir, Grid grid,int row, int col)
 	{
-		field.traversePath(dir, this);
+		grid.getField(row, col).traversePath(dir, this);
 	}
 	
 
