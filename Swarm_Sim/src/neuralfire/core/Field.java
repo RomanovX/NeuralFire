@@ -152,7 +152,7 @@ public class Field {
 			return Constants.wallColor;
 		
 		if(intensity > 0) {
-			int brightness = 255 - (255 * intensity / Constants.fireRadius);
+			int brightness = 255 - (255 * intensity / Constants.fireIntensity);
 			return new Color(255, 255, brightness);
 		}
 		
@@ -193,6 +193,12 @@ public class Field {
 		if (intensity < x)
 			intensity = x;
 	}
+	
+	public int getIntencity()
+	{
+		return intensity;
+	}
+	
 	public void clearIntencity(int x)
 	{
 		intensity = 0;
