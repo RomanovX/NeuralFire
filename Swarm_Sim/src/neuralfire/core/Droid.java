@@ -37,6 +37,7 @@ public class Droid extends WorldObject{
 			walk = new ExplorationWalk();
 		
 		move(walk.performWalk(grid, row, col), grid, row, col);
+		//move(Constants.Dir.LEFT, grid, row, col);
 	}
 	
 	

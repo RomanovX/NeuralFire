@@ -28,7 +28,7 @@ public class Main {
 			Constants.fireRadius = 3;
 			Constants.yellRadius = 4;
 			Constants.scaleUI = 5;
-			Constants.sleepDuration = 200;
+			Constants.sleepDuration = 700;
 		}
 		JFrame window; // The object that represents the window.
 		window = new JFrame("Grid");  // Create a window with "Grid" in the title bar.

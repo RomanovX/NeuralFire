@@ -1,8 +1,11 @@
 package neuralfire.core;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 
 import javax.swing.JPanel;
 
@@ -48,14 +51,14 @@ public class Grid extends JPanel implements ILosBoard {
 				ObjGrid[i][j] = new Field(i, j, this);
 				if (i - 1 >= 0) {
 					Path path = new Path(ObjGrid[i][j], ObjGrid[i - 1][j]);
-					ObjGrid[i][j].AddPath(path, Constants.Dir.DOWN);
-					ObjGrid[i - 1][j].AddPath(path, Constants.Dir.UP);
+					ObjGrid[i][j].AddPath(path, Constants.Dir.UP);
+					ObjGrid[i - 1][j].AddPath(path, Constants.Dir.DOWN);
 
 				}
 				if (j - 1 >= 0) {
 					Path path = new Path(ObjGrid[i][j], ObjGrid[i][j - 1]);
-					ObjGrid[i][j].AddPath(path, Constants.Dir.RIGHT);
-					ObjGrid[i][j - 1].AddPath(path, Constants.Dir.LEFT);
+					ObjGrid[i][j].AddPath(path, Constants.Dir.LEFT);
+					ObjGrid[i][j - 1].AddPath(path, Constants.Dir.RIGHT);
 
 				}
 			}
@@ -75,6 +78,7 @@ public class Grid extends JPanel implements ILosBoard {
 	 * or not.
 	 */
 	protected void paintComponent(Graphics g) {
+		Graphics2D g2 = (Graphics2D)g;
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		int row, col;
@@ -87,34 +91,54 @@ public class Grid extends JPanel implements ILosBoard {
 				int y1 = (int) (row * cellHeight);
 				int x2 = (int) ((col + 1) * cellWidth);
 				int y2 = (int) ((row + 1) * cellHeight);
-				g.setColor(ObjGrid[row][col].GetColor());
-				g.fillRect(x1, y1, (x2 - x1), (y2 - y1));
+				g2.setColor(ObjGrid[row][col].GetColor());
+				g2.fillRect(x1, y1, (x2 - x1), (y2 - y1));
 
 				if (ObjGrid[row][col].getDroidCounter() > 1) 
 				{
-					g.setColor(new Color(0, 0, 0));
-					g.drawString("" + ObjGrid[row][col].getDroidCounter(),
+					g2.setColor(new Color(0, 0, 0));
+					g2.drawString("" + ObjGrid[row][col].getDroidCounter(),
 							(int) (x1 + cellWidth / 2),
 							(int) (y1 + cellHeight / 2));
 
 				}
-
+				
 				// Debug path code
-				if (Constants.debug) {
-					if (ObjGrid[row][col].getPath(Constants.Dir.LEFT) != null) {
+				if (Constants.displayPheromoneLines) {
+					if (ObjGrid[row][col].getPath(Constants.Dir.LEFT) != null && ObjGrid[row][col].getPath(Constants.Dir.LEFT).getPheromoneIntensity() > 0) {
 						int curX = x1 + (x2 - x1) / 2;
 						int curY = y1 + (y2 - y1) / 2;
 						int neighborX = (int) (curX - cellWidth);
 						g.setColor(new Color(0, 0, 255));
+						Stroke oldStroke = g2.getStroke();
+						double thickness = Constants.maxPheromoneLineThickness
+								* (ObjGrid[row][col].getPath(Constants.Dir.LEFT)
+										.getPheromoneIntensity() / Path.currentMaxPheromone);
+						g2.setStroke(new BasicStroke((float) thickness));
+						//g2.setStroke(new BasicStroke(1.0f));
+						g2.setColor(new Color(0.5f, 0.5f, 0f, 0.8f));
 						g.drawLine(curX, curY, neighborX, curY);
+						g2.setStroke(oldStroke);
 					}
-					if (ObjGrid[row][col].getPath(Constants.Dir.UP) != null) {
+					if (ObjGrid[row][col].getPath(Constants.Dir.UP) != null && ObjGrid[row][col].getPath(Constants.Dir.UP).getPheromoneIntensity() > 0) {
 						int curX = x1 + (x2 - x1) / 2;
 						int curY = y1 + (y2 - y1) / 2;
 						int neighborY = (int) (curY - cellHeight);
 						g.setColor(new Color(0, 0, 255));
-						g.drawLine(curX, curY, curX, neighborY);
+						Stroke oldStroke = g2.getStroke();
+						double thickness = Constants.maxPheromoneLineThickness
+								* (ObjGrid[row][col].getPath(Constants.Dir.UP)
+										.getPheromoneIntensity() / Path.currentMaxPheromone);
+						g2.setStroke(new BasicStroke((float) thickness));
+						//g2.setStroke(new BasicStroke(1.0f));
+						g2.setColor(new Color(0.5f, 0.5f, 0f, 0.8f));
+						g2.drawLine(curX, curY, curX, neighborY);
+						g2.setStroke(oldStroke);
 					}
+				}
+
+				// Debug path code
+				if (Constants.debug) {
 
 					// g.drawChars(new char[]{'t'}, 1, 5, x1, y1);
 					g.setColor(Color.blue);
