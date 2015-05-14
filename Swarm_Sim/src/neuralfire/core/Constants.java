@@ -36,4 +36,6 @@ public class Constants {
 	public static int yellRadius = 20;
 	public static int relays = 2;
 	public static int fireIntensity = fireRadius + relays*yellRadius;
+	
+	public static int droidstokillfire = 5;
 }
