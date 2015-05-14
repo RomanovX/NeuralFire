@@ -33,15 +33,19 @@ public class EnvironmentParser {
 			red = ((int) pixels[pixel + 2] & 0xff);
 
 			Color fieldColor = new Color(red, green, blue);
-			if (fieldColor.equals(Constants.droidColor)) {
-				grid.AddObject(row, col, new Droid());
-
-			} else if (fieldColor.equals(Constants.fireColor)) {
+			if (fieldColor.equals(Constants.fireColor)) {
 				grid.AddObject(row, col, new Fire());
 
 			} else if (fieldColor.equals(Constants.wallColor)) {
 				grid.AddObject(row, col, new Wall());
+				
+			} else if (green > 0 && blue == 0 && red == 00) {
+				if (!Constants.spawner){
+					for (int i = 0; i < green; i++)
+						grid.AddObject(row, col, new Droid());
+				}
 			}
+				
 
 			col++;
 			if (col == width) {
