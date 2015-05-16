@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -23,6 +24,7 @@ public class Grid extends JPanel implements ILosBoard {
 	private Color lineColor; // Color for lines drawn between squares; if null,
 								// no lines are drawn.
 	private Field[][] ObjGrid = new Field[100][100];
+	private ArrayList<Path> paths;
 
 	/**
 	 * This constructor creates a panel with a specified number of rows and
@@ -45,6 +47,7 @@ public class Grid extends JPanel implements ILosBoard {
 		gridRows = rows;
 		gridCols = columns;
 		lineColor = Constants.lineColor;
+		paths = new ArrayList<Path>();
 
 		for (int i = 0; i < gridRows; i++) {
 			for (int j = 0; j < gridCols; j++) {
@@ -53,13 +56,14 @@ public class Grid extends JPanel implements ILosBoard {
 					Path path = new Path(ObjGrid[i][j], ObjGrid[i - 1][j]);
 					ObjGrid[i][j].AddPath(path, Constants.Dir.UP);
 					ObjGrid[i - 1][j].AddPath(path, Constants.Dir.DOWN);
+					paths.add(path);
 
 				}
 				if (j - 1 >= 0) {
 					Path path = new Path(ObjGrid[i][j], ObjGrid[i][j - 1]);
 					ObjGrid[i][j].AddPath(path, Constants.Dir.LEFT);
 					ObjGrid[i][j - 1].AddPath(path, Constants.Dir.RIGHT);
-
+					paths.add(path);
 				}
 			}
 		}
@@ -136,6 +140,20 @@ public class Grid extends JPanel implements ILosBoard {
 						g2.setStroke(oldStroke);
 					}
 				}
+				if (Constants.displayPheromoneValues) {
+					if (ObjGrid[row][col].getPath(Constants.Dir.LEFT) != null && ObjGrid[row][col].getPath(Constants.Dir.LEFT).getPheromoneIntensity() > 0) {
+						int curX = (int) ((x1 + (x2 - x1) / 2) - cellWidth/2);
+						int curY = y1 + (y2 - y1) / 2;
+						g.setColor(new Color(0, 0, 255));
+						g.drawString(""+(int)ObjGrid[row][col].getPath(Constants.Dir.LEFT).getPheromoneIntensity(), curX, curY);
+					}
+					if (ObjGrid[row][col].getPath(Constants.Dir.UP) != null && ObjGrid[row][col].getPath(Constants.Dir.UP).getPheromoneIntensity() > 0) {
+						int curX = x1 + (x2 - x1) / 2;
+						int curY = (int) ((y1 + (y2 - y1) / 2) - cellHeight/2);
+						g.setColor(new Color(0, 0, 255));
+						g.drawString(""+(int)ObjGrid[row][col].getPath(Constants.Dir.UP).getPheromoneIntensity(), curX, curY);
+					}
+				}
 
 				// Debug path code
 				if (Constants.debug) {
@@ -197,12 +215,19 @@ public class Grid extends JPanel implements ILosBoard {
 	}
 
 	public void finalizeSimStep() {
+		// pheromone decay
+				pheromoneDecay();
 		for (int i = 0; i < gridRows; i++) {
 			for (int j = 0; j < gridCols; j++) {
 				ObjGrid[i][j].finalizeFieldUpdate();
 			}
 		}
-		
+	}
+	
+	private void pheromoneDecay(){
+		for(Path path : paths){
+			path.doPheromoneUpdate();
+		}
 	}
 
 	public void AddObject(int row, int col, WorldObject x) {

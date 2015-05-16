@@ -124,8 +124,8 @@ public class Field {
 		}
 	}
 	
-	public int getConcentratedPheromoneCount(){
-		int total = 0;
+	public double getConcentratedPheromoneCount(){
+		double total = 0;
 		if(downPath != null)
 			total = total + downPath.getPheromoneIntensity();
 		if(upPath != null)
@@ -318,8 +318,11 @@ public class Field {
 		for(WorldObject wo : this.ObjList){
 			if(wo instanceof Droid)
 				droidCounter++;
-		}
-		
+		}		
+	}
+
+	public int getDroidCounter() {
+		return droidCounter;
 	}
 
 	public Path getDownPath() {
@@ -337,12 +340,6 @@ public class Field {
 	public Path getRightPath() {
 		return rightPath;
 	}
-
-
-	public int getDroidCounter() {
-		return droidCounter;
-	}
-
 
 
 	
