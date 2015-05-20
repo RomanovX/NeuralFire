@@ -17,9 +17,13 @@ public class Constants {
 	
 	public static boolean debug = false;
 	public static boolean displayPheromoneLines = false;
+	public static boolean displayPheromoneValues = true;
 	
 	public static int preferredSquareSize = 10;
-	public static int pheromoneIncrease = 50;
+	public static double pheromoneIncrease = 50;
+	public static double pheromoneZeroThreshold = 1;
+	// between 0 and 1!
+	public static double pheromoneDecay = 0.025;
 	
 	public static double scaleUI = 0.3;
 	public static double maxPheromoneLineThickness = 30; 

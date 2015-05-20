@@ -1,5 +1,8 @@
 package neuralfire.core;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import neuralfire.core.Constants.Dir;
@@ -9,60 +12,78 @@ public class ExplorationWalk implements IWalkAlgorithm {
 	@Override
 	public Dir performWalk(Grid grid, int row, int col) {
 		Field currentField = grid.getField(row, col);
-		int totalPheromonoe = currentField.getConcentratedPheromoneCount();
+		//double totalPheromonoe = currentField.getConcentratedPheromoneCount();
+		
 		
 		Random generator = new Random(); 
 		double chosenProb = generator.nextDouble();
 		Constants.Dir direction = Constants.Dir.UP;
 		
+		HashMap<Constants.Dir, Double> probMap = new HashMap<Constants.Dir, Double>();
+		probMap.put(Constants.Dir.UP, getPheromoneValue(currentField, Constants.Dir.UP));
+		probMap.put(Constants.Dir.DOWN, getPheromoneValue(currentField, Constants.Dir.DOWN));
+		probMap.put(Constants.Dir.LEFT, getPheromoneValue(currentField, Constants.Dir.LEFT));
+		probMap.put(Constants.Dir.RIGHT, getPheromoneValue(currentField, Constants.Dir.RIGHT));
 		
-		double upProb = 0.25;
-		double downProb = 0.25;
-		double leftProb = 0.25;
-		double rightProb = 0.25;
-		if(currentField.getUpPath() != null && currentField.getUpPath().getOtherField(currentField).getPasseble()){
-			double intensity = currentField.getUpPath().getPheromoneIntensity() == 0 ? 1 : currentField.getUpPath().getPheromoneIntensity();
-			upProb = totalPheromonoe / intensity;
+		double totalPheromone = 0;
+		double countNonVisited = 0;
+		HashMap.Entry pair;
+		Iterator<Entry<Dir, Double>> it = probMap.entrySet().iterator();
+	    while (it.hasNext()) {
+	    	pair = (HashMap.Entry)it.next();
+	        if(pair.getValue().equals(0.0))
+	        	countNonVisited++;
+	        else if(pair.getValue().equals(-1.0))
+	        	it.remove();
+	        else
+	        	totalPheromone+= (Double)pair.getValue();
+	    }
+	    
+	    if(countNonVisited > 0){
+	    	it = probMap.entrySet().iterator();
+		    while (it.hasNext()) {
+		    	pair = (HashMap.Entry)it.next();
+		        if(pair.getValue().equals(0.0))
+		        	pair.setValue(1/countNonVisited);
+		        else
+		        	it.remove();
+		    }
+	    } else{
+	    	
+	    	double prob = 0;
+	    	double totalWeightedProb = 0;
+	    	
+	    	it = probMap.entrySet().iterator();
+		    while (it.hasNext()) {
+		    	pair = (HashMap.Entry)it.next();
+		    	prob = totalPheromone/(Double)pair.getValue();
+		        pair.setValue(prob);
+		        totalWeightedProb += prob;
+		    }
+	    	it = probMap.entrySet().iterator();
+		    while (it.hasNext()) {
+		    	pair = (HashMap.Entry)it.next();
+		        pair.setValue((Double)pair.getValue() / totalWeightedProb);
+		    }
+	    }
+	    it = probMap.entrySet().iterator();
+	    double accumulatedProb = 0;
+	    double probToCheck = 0;
+	    while (it.hasNext()) {
+	    	pair = (HashMap.Entry)it.next();
+	    	probToCheck = (Double)pair.getValue() + accumulatedProb;
+	    	if(chosenProb < probToCheck)
+	    		return (Constants.Dir)pair.getKey();
+	    	accumulatedProb+=(Double)pair.getValue();
+	    }
+	    return direction;
+	}
+	
+	private double getPheromoneValue(Field field, Constants.Dir dir){
+		if(field.getPath(dir) != null && field.getPath(dir).getOtherField(field).getPasseble()){
+			return field.getPath(dir).getOtherField(field).getConcentratedPheromoneCount();
 		}
-		else{
-			upProb = 0;
-		}
-		if(currentField.getDownPath() != null && currentField.getDownPath().getOtherField(currentField).getPasseble()){
-			double intensity = currentField.getDownPath().getPheromoneIntensity() == 0 ? 1 : currentField.getDownPath().getPheromoneIntensity();
-			downProb = totalPheromonoe / intensity;
-		}
-		else{
-			downProb = 0;
-		}
-		if(currentField.getLeftPath() != null && currentField.getLeftPath().getOtherField(currentField).getPasseble()){
-			double intensity = currentField.getLeftPath().getPheromoneIntensity() == 0 ? 1 : currentField.getLeftPath().getPheromoneIntensity();
-			leftProb = totalPheromonoe / intensity;
-		}
-		else{
-			leftProb = 0;
-		}
-		if(currentField.getRightPath() != null && currentField.getRightPath().getOtherField(currentField).getPasseble()){
-			double intensity = currentField.getRightPath().getPheromoneIntensity() == 0 ? 1 : currentField.getRightPath().getPheromoneIntensity();
-			rightProb = totalPheromonoe / intensity;
-		}
-		else{
-			rightProb = 0;
-		}
-		double weightedProb = upProb + downProb + leftProb + rightProb;
-		upProb /= weightedProb;
-		downProb /= weightedProb;
-		leftProb /= weightedProb;
-		rightProb /= weightedProb;
-		if(chosenProb < upProb)
-			direction = Constants.Dir.UP;
-		else if (chosenProb < upProb+downProb )
-			direction = Constants.Dir.DOWN;
-		else if (chosenProb < upProb+downProb+leftProb)
-			direction = Constants.Dir.LEFT;
-		else 
-			direction = Constants.Dir.RIGHT;
-		
-		return direction;
+		return -1.0;
 	}
 
 }

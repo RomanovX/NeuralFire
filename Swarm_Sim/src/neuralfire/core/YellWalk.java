@@ -10,7 +10,7 @@ public class YellWalk implements IWalkAlgorithm {
 		double maxVolume = grid.getField(row, col).getVolume();;
 		Constants.Dir chosenDir = Constants.Dir.STAY;
 		
-		if(currentField.getUpPath() != null 
+		if(currentField.getPath(Constants.Dir.UP) != null 
 				&& currentField.getUpPath().getOtherField(currentField).getPasseble() 
 				&& currentField.getUpPath().getOtherField(currentField).getVolume() > maxVolume){
 			chosenDir = Constants.Dir.UP;
