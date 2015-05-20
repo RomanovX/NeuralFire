@@ -29,6 +29,12 @@ public class Main {
 			Constants.yellRadius = 4;
 			Constants.scaleUI = 5;
 			Constants.sleepDuration = 700;
+		} else if (Constants.configuration == 4){
+			Constants.mapFile = "map4";
+			Constants.fireRadius = 15;
+			Constants.yellRadius = 30;
+			Constants.scaleUI = 0.4;
+			Constants.sleepDuration = 20;
 		}
 		JFrame window; // The object that represents the window.
 		window = new JFrame("Grid");  // Create a window with "Grid" in the title bar.

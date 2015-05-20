@@ -22,7 +22,7 @@ public class Grid extends JPanel implements ILosBoard {
 	private int gridCols; // Number of columns of squares.
 	private Color lineColor; // Color for lines drawn between squares; if null,
 								// no lines are drawn.
-	private Field[][] ObjGrid = new Field[100][100];
+	private Field[][] ObjGrid = new Field[250][250];
 
 	/**
 	 * This constructor creates a panel with a specified number of rows and
@@ -64,9 +64,9 @@ public class Grid extends JPanel implements ILosBoard {
 			}
 		}
 
-		setPreferredSize(new Dimension(preferredSquareSize * columns
-				* Constants.scaleUI, preferredSquareSize * rows
-				* Constants.scaleUI));
+		setPreferredSize(new Dimension((int) (preferredSquareSize * columns
+				* Constants.scaleUI), (int) (preferredSquareSize * rows
+				* Constants.scaleUI)));
 		setBackground(Constants.backgroundColor); // Set the background color
 													// for this panel.
 	}
