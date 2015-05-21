@@ -119,6 +119,7 @@ public class Main {
 		}
 		
 		window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+		statWin.dispatchEvent(new WindowEvent(statWin, WindowEvent.WINDOW_CLOSING));
 		return itNo;
 	}
 }
