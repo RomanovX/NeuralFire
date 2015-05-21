@@ -72,7 +72,7 @@ public class Main {
 		
 		int itNo = 0;
 		
-		while(true)
+		while(true && !StatWin.btnPressed)
 		{
 			itNo++;
 			grid.Spin(grid);

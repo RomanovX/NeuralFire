@@ -14,6 +14,10 @@ import java.awt.Insets;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.Color;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
 
 public class StatWin extends JFrame {
 
@@ -21,6 +25,9 @@ public class StatWin extends JFrame {
 	private JTextField DroidNo;
 	private JTextField FireNo;
 	private JLabel ItNo;
+	private JLabel lblComplete;
+	private final Action action = new SwingAction();
+	public static boolean btnPressed = false;
 
 	/**
 	 * Create the frame.
@@ -34,9 +41,9 @@ public class StatWin extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{103, 42, 60, 45};
-		gbl_contentPane.rowHeights = new int[]{16, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{16, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblIteration = new JLabel("Iteration");
@@ -48,7 +55,7 @@ public class StatWin extends JFrame {
 		gbc_lblIteration.gridy = 0;
 		contentPane.add(lblIteration, gbc_lblIteration);
 		
-		ItNo = new JLabel("New label");
+		ItNo = new JLabel("0");
 		GridBagConstraints gbc_ItNo = new GridBagConstraints();
 		gbc_ItNo.gridwidth = 4;
 		gbc_ItNo.insets = new Insets(0, 0, 5, 0);
@@ -93,18 +100,41 @@ public class StatWin extends JFrame {
 		FireNo.setColumns(10);
 		
 		JButton btnEnd = new JButton("End Simulation");
+		btnEnd.setAction(action);
 		GridBagConstraints gbc_btnEnd = new GridBagConstraints();
+		gbc_btnEnd.insets = new Insets(0, 0, 5, 0);
 		gbc_btnEnd.gridwidth = 4;
-		gbc_btnEnd.insets = new Insets(0, 0, 0, 5);
 		gbc_btnEnd.gridx = 0;
 		gbc_btnEnd.gridy = 6;
 		contentPane.add(btnEnd, gbc_btnEnd);
+		
+		lblComplete = new JLabel("Complete");
+		lblComplete.setVisible(false);
+		lblComplete.setForeground(Color.GREEN);
+		lblComplete.setFont(new Font("Lucida Grande", Font.BOLD, 20));
+		GridBagConstraints gbc_lblComplete = new GridBagConstraints();
+		gbc_lblComplete.insets = new Insets(0, 0, 0, 5);
+		gbc_lblComplete.gridx = 1;
+		gbc_lblComplete.gridy = 7;
+		contentPane.add(lblComplete, gbc_lblComplete);
 	}
 	
 	public void updateValues(int droidNo, int fireNo, int itNo) {
 		DroidNo.setText("" + droidNo);
 		FireNo.setText("" + fireNo);
 		ItNo.setText("" + itNo);
+		
+		if(fireNo == 0)
+			lblComplete.setVisible(true);
 	}
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "End Simulation");
+			putValue(SHORT_DESCRIPTION, "Ends the current simulation without closing the window");
+		}
+		public void actionPerformed(ActionEvent e) {
+			btnPressed = true;
+		}
+	}
 }

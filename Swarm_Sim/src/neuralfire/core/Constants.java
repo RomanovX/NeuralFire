@@ -4,7 +4,7 @@ import java.awt.Color;
 
 
 public class Constants {
-	public static int configuration = 4;
+	public static int configuration = 2;
 	
 	public static Color droidColor = Color.green;
 	public static Color fireColor = Color.red;
