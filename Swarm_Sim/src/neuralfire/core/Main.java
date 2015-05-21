@@ -36,6 +36,13 @@ public class Main {
 			Constants.yellRadius = 50;
 			Constants.scaleUI = 0.4;
 			Constants.sleepDuration = 20;
+		} else if (Constants.configuration == 5){
+			Constants.mapFile = "map5";
+			Constants.fireRadius = 10;
+			Constants.yellRadius = 20;
+			Constants.scaleUI = 1.5;
+			Constants.sleepDuration = 20;
+			Constants.displayPheromoneDots = true;
 		}
 		JFrame window; // The object that represents the window.
 		window = new JFrame("Grid");  // Create a window with "Grid" in the title bar.

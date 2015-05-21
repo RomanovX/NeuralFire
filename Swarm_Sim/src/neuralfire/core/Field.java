@@ -21,6 +21,8 @@ public class Field {
 	private Path leftPath;
 	private Path rightPath;
 	
+	public static double maxPheromoneConcentration = 1;
+	
 	public Field(int Row,int Col, Grid thisGrid){
 		intensity = 0;
 		volume = 0;
@@ -88,34 +90,22 @@ public class Field {
 	public void traversePath(Constants.Dir dir, WorldObject traversingObject){
 		switch(dir){
 		case UP:
-			if(upPath != null && upPath.getOtherField(this).getPasseble()){
-				upPath.getOtherField(this).AddObject(traversingObject);
-				upPath.incresePheromoneIntensity(Constants.pheromoneIncrease);
-			} else{
+			if(!(upPath != null && upPath.traverse(this, traversingObject))){
 				this.AddObject(traversingObject);
 			}
 			break;
 		case DOWN:
-			if(downPath != null && downPath.getOtherField(this).getPasseble()){
-				downPath.getOtherField(this).AddObject(traversingObject);
-				downPath.incresePheromoneIntensity(Constants.pheromoneIncrease);
-			} else{
+			if(!(downPath != null && downPath.traverse(this, traversingObject))){
 				this.AddObject(traversingObject);
 			}
 			break;
 		case LEFT:
-			if(leftPath != null && leftPath.getOtherField(this).getPasseble()){
-				leftPath.getOtherField(this).AddObject(traversingObject);
-				leftPath.incresePheromoneIntensity(Constants.pheromoneIncrease);
-			} else{
+			if(!(leftPath != null && leftPath.traverse(this, traversingObject))){
 				this.AddObject(traversingObject);
 			}
 			break;
 		case RIGHT:
-			if(rightPath != null && rightPath.getOtherField(this).getPasseble()){
-				rightPath.getOtherField(this).AddObject(traversingObject);
-				rightPath.incresePheromoneIntensity(Constants.pheromoneIncrease);
-			} else{
+			if(!(rightPath != null && rightPath.traverse(this, traversingObject))){
 				this.AddObject(traversingObject);
 			}
 			break;
@@ -134,6 +124,9 @@ public class Field {
 			total = total + leftPath.getPheromoneIntensity();
 		if(rightPath != null)
 			total = total + rightPath.getPheromoneIntensity();
+		
+		maxPheromoneConcentration = Math.max(maxPheromoneConcentration, total);
+		
 		return total;
 	}
 	
@@ -305,7 +298,7 @@ public class Field {
 	
 	public boolean getPasseble()
 	{
-		if(hasFire || hasWall)
+		if(hasFire || hasWall || droidCounter > Constants.maxDroidPerField)
 			return false;
 		else
 			return true;

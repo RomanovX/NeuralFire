@@ -155,6 +155,21 @@ public class Grid extends JPanel implements ILosBoard {
 						g.drawString(""+(int)ObjGrid[row][col].getPath(Constants.Dir.UP).getPheromoneIntensity(), curX, curY);
 					}
 				}
+				
+				if (Constants.displayPheromoneDots) {
+					double pheromone = ObjGrid[row][col].getConcentratedPheromoneCount();
+					if(pheromone > Constants.pheromoneZeroThreshold){
+						float alpha = (float) (pheromone/Field.maxPheromoneConcentration);
+						alpha = Math.max(alpha, 0.2f);
+						alpha = Math.min(alpha, 1.0f);
+						int offset = 10;
+						x1 = (int) (col * cellWidth);
+						y1 = (int) (row * cellHeight);
+						g.setColor(new Color(0.8f, 0.2f, 0.2f, alpha));
+						g.fillOval(x1, y1, (int)cellWidth , (int)cellHeight);
+					}
+					
+				}
 
 				// Debug path code
 				if (Constants.debug) {
@@ -217,7 +232,7 @@ public class Grid extends JPanel implements ILosBoard {
 
 	public void finalizeSimStep() {
 		// pheromone decay
-				pheromoneDecay();
+		doPathLogic();
 		for (int i = 0; i < gridRows; i++) {
 			for (int j = 0; j < gridCols; j++) {
 				ObjGrid[i][j].finalizeFieldUpdate();
@@ -225,9 +240,9 @@ public class Grid extends JPanel implements ILosBoard {
 		}
 	}
 	
-	private void pheromoneDecay(){
+	private void doPathLogic(){
 		for(Path path : paths){
-			path.doPheromoneUpdate();
+			path.doPathLogic();
 		}
 	}
 
