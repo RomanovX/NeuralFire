@@ -57,11 +57,26 @@ public class Main {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
 		
+		int w = (int) window.getWidth();
+		
+		StatWin statWin; // The object that represents the window.
+		statWin = new StatWin();  // Create a window with "Grid" in the title bar.
+		statWin.setVisible(true);
+		statWin.setLocationRelativeTo(window);
+		statWin.setLocation(w + 100, 0);
+		
+		
+		
+		
 		grid.finalizeSimStep();
+		
+		int itNo = 0;
 		
 		while(true)
 		{
+			itNo++;
 			grid.Spin(grid);
+			statWin.updateValues(Droid.droidNo, Fire.fireNo, itNo);
 			
 			try {
 			    Thread.sleep(Constants.sleepDuration);                 //200 milliseconds is one second.

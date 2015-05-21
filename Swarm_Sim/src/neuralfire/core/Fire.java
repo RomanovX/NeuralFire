@@ -3,10 +3,12 @@ package neuralfire.core;
 import neuralfire.core.Constants.Dir;
 
 public class Fire extends WorldObject{
+	public static int fireNo = 0;
 
 	public Fire(){
 		movable = false;
 		stackable = false;
+		fireNo++;
 	}
 
 	
@@ -29,9 +31,10 @@ public class Fire extends WorldObject{
 			this.spread(grid, row, col, Constants.fireRadius, Constants.fireIntensity);
 			grid.getField(row, col).AddObject(this);
 		}
-		else
+		else {
 			this.spread(grid, row, col, Constants.fireRadius, 0);
-			
+			fireNo--;
+		}	
 	}
 	
 	

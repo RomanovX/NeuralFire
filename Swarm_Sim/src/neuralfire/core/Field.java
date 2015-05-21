@@ -12,6 +12,7 @@ public class Field {
 	private int col;
 	private int row;
 	private int droidCounter;
+	private int fireCounter;
 	private Grid grid; /*grid this field is part of*/
 	private boolean hasFire;
 	private boolean hasDroid;
