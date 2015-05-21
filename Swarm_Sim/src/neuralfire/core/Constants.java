@@ -18,13 +18,14 @@ public class Constants {
 	
 	public static boolean debug = false;
 	public static boolean displayPheromoneLines = false;
-	public static boolean displayPheromoneValues = true;
+	public static boolean displayPheromoneValues = false;
+	public static boolean displayPheromoneDots = true;
 	
 	public static int preferredSquareSize = 10;
 	public static double pheromoneIncrease = 50;
 	public static double pheromoneZeroThreshold = 1;
 	// between 0 and 1!
-	public static double pheromoneDecay = 0.025;
+	public static double pheromoneDecay = 0.09;
 	
 	public static double scaleUI = 0.3;
 	public static double maxPheromoneLineThickness = 30; 
@@ -41,8 +42,10 @@ public class Constants {
 	public static double volumeDecayThreshold = 1;
 	public static int fireRadius = 10;
 	public static int yellRadius = 20;
-	public static int relays = 3;
+	public static int relays = 2;
 	public static int fireIntensity = fireRadius + relays*yellRadius;
 	
 	public static int droidstokillfire = 5;
+	
+	public static int maxDroidPerField = 20;
 }
