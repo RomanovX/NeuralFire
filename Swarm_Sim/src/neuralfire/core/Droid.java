@@ -14,7 +14,7 @@ public class Droid extends WorldObject{
 	public void relay(Grid grid,int row, int col){
 		
 		if(doFireWalk(grid, row, col)){
-			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getIntensity());
+			this.spread(grid, row, col, Constants.yellRadius, Constants.yellVolume);
 		}
 		else if (followYelling(grid, row, col)){
 			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getVolume());
@@ -27,7 +27,7 @@ public class Droid extends WorldObject{
 		
 		// TODO include this once firewalk is implemented
 		if(doFireWalk(grid, row, col)){
-			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getIntensity());
+			this.spread(grid, row, col, Constants.yellRadius,Constants.yellVolume);
 			walk = new FireWalk();
 		}
 		else if (followYelling(grid, row, col)){

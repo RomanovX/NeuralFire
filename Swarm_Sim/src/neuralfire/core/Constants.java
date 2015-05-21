@@ -4,7 +4,7 @@ import java.awt.Color;
 
 
 public class Constants {
-	public static int configuration = 2;
+	public static int configuration = 6;
 	
 	public static Color droidColor = Color.green;
 	public static Color fireColor = Color.red;
@@ -41,7 +41,8 @@ public class Constants {
 	public static double volumeDecay = 2;
 	public static double volumeDecayThreshold = 1;
 	public static int fireRadius = 10;
-	public static int yellRadius = 20;
+	public static int yellRadius = 50;
+	public static int yellVolume = yellRadius;
 	public static int relays = 2;
 	public static int fireIntensity = fireRadius + relays*yellRadius;
 	

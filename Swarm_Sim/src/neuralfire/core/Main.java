@@ -30,7 +30,7 @@ public class Main {
 			} else if (Constants.configuration == 2){
 				Constants.mapFile = "map2";
 				Constants.fireRadius = 10;
-				Constants.yellRadius = 25;
+				Constants.yellRadius = 15;
 				Constants.scaleUI = 1;
 				Constants.sleepDuration = 0;
 				Constants.relays = 1;
@@ -53,9 +53,21 @@ public class Main {
 				Constants.scaleUI = 1.5;
 				Constants.sleepDuration = 0;
 				Constants.displayPheromoneDots = true;
+			}else if (Constants.configuration == 6){
+				Constants.mapFile = "mapIO1";
+				Constants.fireRadius = 10;
+				Constants.yellRadius = 20;
+				Constants.scaleUI = 1;
+				Constants.pheromoneIncrease = 100;
+				Constants.pheromoneDecay = 0.02;
+				Constants.sleepDuration = 0;
+				Constants.displayPheromoneDots = true;
 			}
 			
+			
+			
 			writer.write("Nr Of Droids, Run 1,Run 2,Run 3, Run 4, Run 5\n");
+			
 			
 			for(int NumberOfDroids = 50; NumberOfDroids < 101; NumberOfDroids = NumberOfDroids+50){
 				writer.write("" + NumberOfDroids);

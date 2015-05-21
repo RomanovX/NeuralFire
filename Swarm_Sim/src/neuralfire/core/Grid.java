@@ -203,7 +203,7 @@ public class Grid extends JPanel implements ILosBoard {
 				int y = (int) (row * cellHeight);
 				g.drawLine(0, y, getWidth(), y);
 			}
-			for (col = 1; col < gridRows; col++) {
+			for (col = 1; col < gridCols; col++) {
 				int x = (int) (col * cellWidth);
 				g.drawLine(x, 0, x, getHeight());
 			}
