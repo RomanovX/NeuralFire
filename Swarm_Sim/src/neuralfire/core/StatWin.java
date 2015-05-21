@@ -27,7 +27,6 @@ public class StatWin extends JFrame {
 	private JLabel ItNo;
 	private JLabel lblComplete;
 	private final Action action = new SwingAction();
-	public static boolean btnPressed = false;
 
 	/**
 	 * Create the frame.
@@ -134,7 +133,7 @@ public class StatWin extends JFrame {
 			putValue(SHORT_DESCRIPTION, "Ends the current simulation without closing the window");
 		}
 		public void actionPerformed(ActionEvent e) {
-			btnPressed = true;
+			System.exit(1);
 		}
 	}
 }

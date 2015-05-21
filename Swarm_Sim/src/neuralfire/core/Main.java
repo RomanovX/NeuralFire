@@ -61,6 +61,8 @@ public class Main {
 				writer.write("" + NumberOfDroids);
 				Constants.droidsPerSpawner = NumberOfDroids;
 				for (int i = 0; i < 1 ; i++){
+					Droid.droidNo = 0;
+					Fire.fireNo = 0;
 					result = runSim();
 					writer.write("," + result);
 				}
@@ -105,7 +107,7 @@ public class Main {
 		
 		int itNo = 0;
 		
-		while(Fire.fireNo != 0 && !StatWin.btnPressed)
+		while(Fire.fireNo != 0)
 		{
 			itNo++;
 			grid.Spin(grid);
