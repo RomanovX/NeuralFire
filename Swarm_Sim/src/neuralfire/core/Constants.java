@@ -13,7 +13,8 @@ public class Constants {
 	public static Color lineColor = Color.black;
 	public static Color backgroundColor = Color.white;
 	
-	public static boolean spawner = false;
+	public static boolean spawner = true;
+	public static int droidsPerSpawner = 10;
 	
 	public static boolean debug = false;
 	public static boolean displayPheromoneLines = false;
