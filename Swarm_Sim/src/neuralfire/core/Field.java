@@ -228,12 +228,14 @@ public class Field {
 			return Constants.wallColor;	
 
 		if(intensity > 0) {
-			int brightness = (int) (255 - (255 * intensity / Constants.fireIntensity));
+			//int brightness = (int) (255 - (255 * intensity / Constants.fireIntensity));
+			int brightness = (int) Math.min((255 - (255 * intensity / Constants.fireIntensity)), 200);
 			return new Color(255, 255, brightness);
 		}
 		
 		if(volume > 0) {
-			int brightness = (int) (255 - (255 * volume / Constants.fireIntensity));
+			//int brightness = (int) (255 - (255 * volume / Constants.fireIntensity));
+			int brightness = (int) Math.min((255 - (255 * volume / Constants.fireIntensity)), 200);
 			return new Color(brightness, brightness, 255);
 		}
 		

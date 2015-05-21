@@ -19,20 +19,21 @@ public class Main {
 			Constants.sleepDuration = 200;
 		} else if (Constants.configuration == 2){
 			Constants.mapFile = "map2";
-			Constants.fireRadius = 10;
+			Constants.fireRadius = 100;
 			Constants.yellRadius = 20;
 			Constants.scaleUI = 1;
 			Constants.sleepDuration = 20;
+			Constants.relays = 1;
 		} else if(Constants.configuration == 3){
 			Constants.mapFile = "map3";
 			Constants.fireRadius = 3;
-			Constants.yellRadius = 4;
+			Constants.yellRadius = 8;
 			Constants.scaleUI = 5;
-			Constants.sleepDuration = 700;
+			Constants.sleepDuration = 100;
 		} else if (Constants.configuration == 4){
 			Constants.mapFile = "map4";
 			Constants.fireRadius = 15;
-			Constants.yellRadius = 30;
+			Constants.yellRadius = 50;
 			Constants.scaleUI = 0.4;
 			Constants.sleepDuration = 20;
 		}
