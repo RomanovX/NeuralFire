@@ -44,6 +44,10 @@ public class EnvironmentParser {
 					for (int i = 0; i < green; i++)
 						grid.AddObject(row, col, new Droid());
 				}
+				else{
+					for (int i = 0; i < Constants.droidsPerSpawner; i++)
+						grid.AddObject(row, col, new Droid());
+				}
 			}
 				
 
