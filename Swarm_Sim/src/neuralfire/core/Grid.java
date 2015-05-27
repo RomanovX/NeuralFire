@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -17,7 +19,7 @@ import rlforj.los.ILosBoard;
  * class also include a main() routine that creates a window containing a panel
  * of this type.
  */
-public class Grid extends JPanel implements ILosBoard {
+public class Grid extends JPanel implements ILosBoard, KeyListener {
 
 	private int gridRows; // Number of rows of squares.
 	private int gridCols; // Number of columns of squares.
@@ -26,6 +28,7 @@ public class Grid extends JPanel implements ILosBoard {
 
 	private Field[][] ObjGrid = new Field[250][250];
 	private ArrayList<Path> paths;
+	private boolean paused = false;
 
 	/**
 	 * This constructor creates a panel with a specified number of rows and
@@ -45,6 +48,7 @@ public class Grid extends JPanel implements ILosBoard {
 	 *            become rectangles if the preferred size is not respected.)
 	 */
 	public Grid(int rows, int columns, int preferredSquareSize) {
+		
 		gridRows = rows;
 		gridCols = columns;
 		lineColor = Constants.lineColor;
@@ -220,23 +224,25 @@ public class Grid extends JPanel implements ILosBoard {
 	}
 
 	public void Spin(Grid grid) {
-		repaint();
-		clearYelling();
-		for (int k = 0; k < Constants.relays; k++) {
-			for (int i = 0; i < gridRows; i++) {
-				for (int j = 0; j < gridCols; j++) {
-					ObjGrid[i][j].relay(grid);
+		if(!paused){
+			repaint();
+			clearYelling();
+			for (int k = 0; k < Constants.relays; k++) {
+				for (int i = 0; i < gridRows; i++) {
+					for (int j = 0; j < gridCols; j++) {
+						ObjGrid[i][j].relay(grid);
+					}
 				}
 			}
-		}
-
-		for (int i = 0; i < gridRows; i++) {
-			for (int j = 0; j < gridCols; j++) {
-				ObjGrid[i][j].UpdateField(grid);
+	
+			for (int i = 0; i < gridRows; i++) {
+				for (int j = 0; j < gridCols; j++) {
+					ObjGrid[i][j].UpdateField(grid);
+				}
 			}
+	
+			finalizeSimStep();
 		}
-
-		finalizeSimStep();
 	}
 
 	public void finalizeSimStep() {
@@ -293,4 +299,28 @@ public class Grid extends JPanel implements ILosBoard {
 	public void visit(int x, int y) {
 
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		char c = e.getKeyChar();
+		if(c == ' ')
+			paused = !paused;
+	}
+	
+	
+	
+	public boolean isPaused() {
+		return paused;
+	}
+
 } // end class Grid

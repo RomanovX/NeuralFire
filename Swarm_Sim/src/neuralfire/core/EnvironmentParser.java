@@ -49,7 +49,6 @@ public class EnvironmentParser {
 						grid.AddObject(row, col, new Droid());
 				}
 			}
-				
 
 			col++;
 			if (col == width) {

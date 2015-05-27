@@ -55,4 +55,9 @@ public class Constants {
 	
 	public static double fireSpread = 0.05;
 	public static boolean fireSpreading = false;
+	
+	public static int maxIterations = 5000;
+	
+	public static double fireExtinguishedMilestone = 0.3;
+	public static String delimiter = ";";
 }
