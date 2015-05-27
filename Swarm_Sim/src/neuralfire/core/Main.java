@@ -39,7 +39,7 @@ public class Main {
 				Constants.fireRadius = 3;
 				Constants.yellRadius = 8;
 				Constants.scaleUI = 5;
-				Constants.sleepDuration = 0;
+				Constants.sleepDuration = 800;
 			} else if (Constants.configuration == 4){
 				Constants.mapFile = "map4";
 				Constants.fireRadius = 15;
@@ -57,6 +57,7 @@ public class Main {
 				Constants.mapFile = "mapIO1";
 				Constants.fireRadius = 10;
 				Constants.yellRadius = 20;
+				Constants.yellVolume = 60;
 				Constants.scaleUI = 1;
 				Constants.pheromoneIncrease = 100;
 				Constants.pheromoneDecay = 0.02;

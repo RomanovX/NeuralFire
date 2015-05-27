@@ -27,10 +27,10 @@ public class ExplorationWalk implements IWalkAlgorithm {
 		
 		double totalPheromone = 0;
 		double countNonVisited = 0;
-		HashMap.Entry pair;
+		HashMap.Entry<Dir, Double> pair;
 		Iterator<Entry<Dir, Double>> it = probMap.entrySet().iterator();
 	    while (it.hasNext()) {
-	    	pair = (HashMap.Entry)it.next();
+	    	pair = (HashMap.Entry<Dir, Double>)it.next();
 	        if(pair.getValue().equals(0.0))
 	        	countNonVisited++;
 	        else if(pair.getValue().equals(-1.0))
@@ -42,7 +42,7 @@ public class ExplorationWalk implements IWalkAlgorithm {
 	    if(countNonVisited > 0){
 	    	it = probMap.entrySet().iterator();
 		    while (it.hasNext()) {
-		    	pair = (HashMap.Entry)it.next();
+		    	pair = (HashMap.Entry<Dir, Double>)it.next();
 		        if(pair.getValue().equals(0.0))
 		        	pair.setValue(1/countNonVisited);
 		        else
@@ -55,14 +55,14 @@ public class ExplorationWalk implements IWalkAlgorithm {
 	    	
 	    	it = probMap.entrySet().iterator();
 		    while (it.hasNext()) {
-		    	pair = (HashMap.Entry)it.next();
+		    	pair = (HashMap.Entry<Dir, Double>)it.next();
 		    	prob = totalPheromone/(Double)pair.getValue();
 		        pair.setValue(prob);
 		        totalWeightedProb += prob;
 		    }
 	    	it = probMap.entrySet().iterator();
 		    while (it.hasNext()) {
-		    	pair = (HashMap.Entry)it.next();
+		    	pair = (HashMap.Entry<Dir, Double>)it.next();
 		        pair.setValue((Double)pair.getValue() / totalWeightedProb);
 		    }
 	    }
@@ -70,7 +70,7 @@ public class ExplorationWalk implements IWalkAlgorithm {
 	    double accumulatedProb = 0;
 	    double probToCheck = 0;
 	    while (it.hasNext()) {
-	    	pair = (HashMap.Entry)it.next();
+	    	pair = (HashMap.Entry<Dir, Double>)it.next();
 	    	probToCheck = (Double)pair.getValue() + accumulatedProb;
 	    	if(chosenProb < probToCheck)
 	    		return (Constants.Dir)pair.getKey();

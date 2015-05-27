@@ -83,6 +83,7 @@ public class Grid extends JPanel implements ILosBoard {
 	 * or not.
 	 */
 	protected void paintComponent(Graphics g) {
+		
 		Graphics2D g2 = (Graphics2D)g;
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -215,6 +216,7 @@ public class Grid extends JPanel implements ILosBoard {
 				g.drawLine(x, 0, x, getHeight());
 			}
 		}
+		
 	}
 
 	public void Spin(Grid grid) {

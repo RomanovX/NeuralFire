@@ -42,7 +42,6 @@ public class WorldObject {
 					if(dist <= radius && a.existsLineOfSight(grid, row, col, x, y, false) && !grid.getField(x, y).isHasWall())
 					//if(dist <= radius)
 					{
-						
 						if(grid.getField(row, col).isHasDroid())
 						{
 							grid.getField(row-(row - x), col-(col - y)).setVolume(intensity - dist);
@@ -58,7 +57,6 @@ public class WorldObject {
 								grid.getField(row-(row - x), col-(col - y)).setIntensity(intensity - dist);
 							}
 						}
-						
 					}
 				}
 			}			

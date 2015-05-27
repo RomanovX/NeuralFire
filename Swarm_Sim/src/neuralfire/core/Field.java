@@ -315,7 +315,7 @@ public class Field {
 		for(WorldObject wo : this.ObjList){
 			if(wo instanceof Droid)
 				droidCounter++;
-			if(wo instanceof Fire)
+			if(Constants.fireSpreading && wo instanceof Fire)
 				fireCounter++;
 		}		
 	}

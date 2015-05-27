@@ -47,9 +47,12 @@ public class Constants {
 	public static int relays = 2;
 
 	public static int fireIntensity = fireRadius + relays*yellRadius;
-	public static int timeToSpread = 100;
+	public static int timeToSpread = 70;
 	
 	public static int droidstokillfire = 5;
 	
 	public static int maxDroidPerField = 20;
+	
+	public static double fireSpread = 0.05;
+	public static boolean fireSpreading = false;
 }

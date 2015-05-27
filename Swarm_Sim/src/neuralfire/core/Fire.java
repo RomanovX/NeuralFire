@@ -1,5 +1,7 @@
 package neuralfire.core;
 
+import java.util.Random;
+
 import neuralfire.core.Constants.Dir;
 
 public class Fire extends WorldObject{
@@ -39,13 +41,26 @@ public class Fire extends WorldObject{
 		
 		if(thisFire.getFireCounter() > Constants.timeToSpread)
 		{
-			if(!thisFire.getAdjecentField(Dir.UP).isHasFire() && !thisFire.getAdjecentField(Dir.UP).isHasDroid() && !thisFire.getAdjecentField(Dir.UP).isHasWall())
+			Random rand = new Random();
+			if(!thisFire.getAdjecentField(Dir.UP).isHasFire() 
+					&& !thisFire.getAdjecentField(Dir.UP).isHasDroid() 
+					&& !thisFire.getAdjecentField(Dir.UP).isHasWall()
+					&& rand.nextBoolean())
 				thisFire.getAdjecentField(Dir.UP).AddObject(new Fire());
-			if(!thisFire.getAdjecentField(Dir.DOWN).isHasFire() && !thisFire.getAdjecentField(Dir.DOWN).isHasDroid() && !thisFire.getAdjecentField(Dir.DOWN).isHasWall())
+			if(!thisFire.getAdjecentField(Dir.DOWN).isHasFire() 
+					&& !thisFire.getAdjecentField(Dir.DOWN).isHasDroid() 
+					&& !thisFire.getAdjecentField(Dir.DOWN).isHasWall()
+					&& rand.nextBoolean())
 				thisFire.getAdjecentField(Dir.DOWN).AddObject(new Fire());
-			if(!thisFire.getAdjecentField(Dir.LEFT).isHasFire() && !thisFire.getAdjecentField(Dir.LEFT).isHasDroid() && !thisFire.getAdjecentField(Dir.LEFT).isHasWall())
+			if(!thisFire.getAdjecentField(Dir.LEFT).isHasFire() 
+					&& !thisFire.getAdjecentField(Dir.LEFT).isHasDroid() 
+					&& !thisFire.getAdjecentField(Dir.LEFT).isHasWall()
+					&& rand.nextBoolean())
 				thisFire.getAdjecentField(Dir.LEFT).AddObject(new Fire());
-			if(!thisFire.getAdjecentField(Dir.RIGHT).isHasFire() && !thisFire.getAdjecentField(Dir.RIGHT).isHasDroid() && !thisFire.getAdjecentField(Dir.RIGHT).isHasWall())
+			if(!thisFire.getAdjecentField(Dir.RIGHT).isHasFire() 
+					&& !thisFire.getAdjecentField(Dir.RIGHT).isHasDroid() 
+					&& !thisFire.getAdjecentField(Dir.RIGHT).isHasWall()
+					&& rand.nextBoolean())
 				thisFire.getAdjecentField(Dir.RIGHT).AddObject(new Fire());
 			thisFire.clearFireCounter();
 		}
