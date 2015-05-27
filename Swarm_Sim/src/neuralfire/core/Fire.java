@@ -34,7 +34,21 @@ public class Fire extends WorldObject{
 		else {
 			this.spread(grid, row, col, Constants.fireRadius, 0);
 			fireNo--;
+			thisFire.clearFireCounter();
 		}	
+		
+		if(thisFire.getFireCounter() > Constants.timeToSpread)
+		{
+			if(!thisFire.getAdjecentField(Dir.UP).isHasFire() && !thisFire.getAdjecentField(Dir.UP).isHasDroid() && !thisFire.getAdjecentField(Dir.UP).isHasWall())
+				thisFire.getAdjecentField(Dir.UP).AddObject(new Fire());
+			if(!thisFire.getAdjecentField(Dir.DOWN).isHasFire() && !thisFire.getAdjecentField(Dir.DOWN).isHasDroid() && !thisFire.getAdjecentField(Dir.DOWN).isHasWall())
+				thisFire.getAdjecentField(Dir.DOWN).AddObject(new Fire());
+			if(!thisFire.getAdjecentField(Dir.LEFT).isHasFire() && !thisFire.getAdjecentField(Dir.LEFT).isHasDroid() && !thisFire.getAdjecentField(Dir.LEFT).isHasWall())
+				thisFire.getAdjecentField(Dir.LEFT).AddObject(new Fire());
+			if(!thisFire.getAdjecentField(Dir.RIGHT).isHasFire() && !thisFire.getAdjecentField(Dir.RIGHT).isHasDroid() && !thisFire.getAdjecentField(Dir.RIGHT).isHasWall())
+				thisFire.getAdjecentField(Dir.RIGHT).AddObject(new Fire());
+			thisFire.clearFireCounter();
+		}
 	}
 	
 	

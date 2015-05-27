@@ -43,7 +43,11 @@ public class WorldObject {
 					//if(dist <= radius)
 					{
 						
-						if(grid.getField(row, col).isHasFire())
+						if(grid.getField(row, col).isHasDroid())
+						{
+							grid.getField(row-(row - x), col-(col - y)).setVolume(intensity - dist);
+						}
+						else if(grid.getField(row, col).isHasFire())
 						{
 							if(intensity == 0)
 							{
@@ -54,10 +58,7 @@ public class WorldObject {
 								grid.getField(row-(row - x), col-(col - y)).setIntensity(intensity - dist);
 							}
 						}
-						if(grid.getField(row, col).isHasDroid())
-						{
-							grid.getField(row-(row - x), col-(col - y)).setVolume(intensity - dist);
-						}
+						
 					}
 				}
 			}			

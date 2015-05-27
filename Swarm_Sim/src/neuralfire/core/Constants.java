@@ -41,10 +41,13 @@ public class Constants {
 	public static double volumeDecay = 2;
 	public static double volumeDecayThreshold = 1;
 	public static int fireRadius = 10;
+
 	public static int yellRadius = 50;
 	public static int yellVolume = yellRadius;
 	public static int relays = 2;
+
 	public static int fireIntensity = fireRadius + relays*yellRadius;
+	public static int timeToSpread = 100;
 	
 	public static int droidstokillfire = 5;
 	

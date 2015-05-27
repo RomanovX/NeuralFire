@@ -31,6 +31,7 @@ public class Field {
 		hasDroid = false;
 		hasWall = false;
 		droidCounter = 0;
+		fireCounter = 0;
 		col = Col;
 		row = Row;
 		grid = thisGrid;
@@ -314,11 +315,21 @@ public class Field {
 		for(WorldObject wo : this.ObjList){
 			if(wo instanceof Droid)
 				droidCounter++;
+			if(wo instanceof Fire)
+				fireCounter++;
 		}		
 	}
 
 	public int getDroidCounter() {
 		return droidCounter;
+	}
+	
+	public int getFireCounter() {
+		return fireCounter;
+	}
+	
+	public void clearFireCounter() {
+		fireCounter = 0;
 	}
 
 	public Path getDownPath() {
