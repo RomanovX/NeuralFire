@@ -26,7 +26,7 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 	private Color lineColor; // Color for lines drawn between squares; if null,
 								// no lines are drawn.
 
-	private Field[][] ObjGrid = new Field[250][250];
+	private Field[][] ObjGrid = new Field[350][350];
 	private ArrayList<Path> paths;
 	private boolean paused = false;
 

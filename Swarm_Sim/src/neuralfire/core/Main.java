@@ -69,6 +69,17 @@ public class Main {
 				Constants.sleepDuration = 0;
 				Constants.displayPheromoneDots = true;
 				Constants.spawner = true;
+			}else if (Constants.configuration == 7){
+				Constants.mapFile = "map6";
+				Constants.fireRadius = 10;
+				Constants.yellRadius = 20;
+				Constants.yellVolume = 60;
+				Constants.scaleUI = 1;
+				Constants.pheromoneIncrease = 100;
+				Constants.pheromoneDecay = 0.02;
+				Constants.sleepDuration = 0;
+				Constants.displayPheromoneDots = true;
+				Constants.spawner = true;
 			}
 			
 			writer.write("##################################\n");
