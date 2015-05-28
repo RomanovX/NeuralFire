@@ -5,10 +5,15 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Modifier;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 
@@ -27,39 +32,39 @@ public class Main {
 			writer = new PrintWriter("SimResults.txt", "UTF-8");
 			
 			if(Constants.configuration == 1){
-				Constants.mapFile = "map1";
+				Constants.mapFile = "map1.bmp";
 				Constants.fireRadius = 3;
 				Constants.yellRadius = 4;
 				Constants.scaleUI = 5;
 				Constants.sleepDuration = 0;
 			} else if (Constants.configuration == 2){
-				Constants.mapFile = "map2";
+				Constants.mapFile = "map2.bmp";
 				Constants.fireRadius = 10;
 				Constants.yellRadius = 15;
 				Constants.scaleUI = 1;
 				Constants.sleepDuration = 0;
-				Constants.relays = 1;
+				//Constants.relays = 1;
 			} else if(Constants.configuration == 3){
-				Constants.mapFile = "map3";
+				Constants.mapFile = "map3.bmp";
 				Constants.fireRadius = 3;
 				Constants.yellRadius = 8;
 				Constants.scaleUI = 5;
 				Constants.sleepDuration = 800;
 			} else if (Constants.configuration == 4){
-				Constants.mapFile = "map4";
+				Constants.mapFile = "map4.bmp";
 				Constants.fireRadius = 15;
 				Constants.yellRadius = 50;
 				Constants.scaleUI = 0.4;
 				Constants.sleepDuration = 0;
 			} else if (Constants.configuration == 5){
-				Constants.mapFile = "map5";
+				Constants.mapFile = "map5.bmp";
 				Constants.fireRadius = 10;
 				Constants.yellRadius = 20;
 				Constants.scaleUI = 1.5;
 				Constants.sleepDuration = 0;
 				Constants.displayPheromoneDots = true;
 			}else if (Constants.configuration == 6){
-				Constants.mapFile = "mapIO1";
+				Constants.mapFile = "mapIO1.bmp";
 				Constants.fireRadius = 10;
 				Constants.yellRadius = 20;
 				Constants.yellVolume = 60;
@@ -70,7 +75,9 @@ public class Main {
 				Constants.displayPheromoneDots = true;
 				Constants.spawner = true;
 			}else if (Constants.configuration == 7){
-				Constants.mapFile = "map6";
+				Constants.mapFile = "map6.bmp";
+			} else if (Constants.configuration == 8){
+				Constants.mapFile = "mapIO1.bmp";
 				Constants.fireRadius = 10;
 				Constants.yellRadius = 20;
 				Constants.yellVolume = 60;
@@ -80,6 +87,23 @@ public class Main {
 				Constants.sleepDuration = 0;
 				Constants.displayPheromoneDots = true;
 				Constants.spawner = true;
+				Constants.useMapDirectory = true;
+				
+			}
+			
+			java.nio.file.Path currentRelativePath = Paths.get("");
+			String s = currentRelativePath.toAbsolutePath().toString();
+			List<String> maps = new ArrayList<String>();
+			if(Constants.useMapDirectory){
+				File directory = new File("src/environmentMaps/"+Constants.mapDirectory+"/");
+				for (final File fileEntry : directory.listFiles()) {
+			        if (!fileEntry.isDirectory()) {
+			        	maps.add("src/environmentMaps/"+Constants.mapDirectory+"/"+fileEntry.getName());
+			        }
+			    }
+			} 
+			else {
+				maps.add("src/environmentMaps/"+Constants.mapFile);
 			}
 			
 			writer.write("##################################\n");
@@ -98,15 +122,22 @@ public class Main {
 			writer.write("##################################\n");
 			
 			
-			for(int NumberOfDroids = 50; NumberOfDroids < 101; NumberOfDroids = NumberOfDroids+50){
-				writer.write("" + NumberOfDroids);
-				Constants.droidsPerSpawner = NumberOfDroids;
-				for (int i = 0; i < 1 ; i++){
-					Droid.droidNo = 0;
-					Fire.fireNo = 0;
-					result = runSim(writer);
+			for(String map : maps){
+				Constants.mapFile = map;
+				writer.write("Map: "+map+"\n");
+				for(int NumberOfDroids = Constants.initialNumberOfDroids; NumberOfDroids < Constants.maxDroids+1; NumberOfDroids = NumberOfDroids+Constants.numberOfDroidsIncrease){
+					Constants.droidsPerSpawner = NumberOfDroids;
+					for (int i = 0; i < Constants.trials ; i++){
+						Droid.droidNo = 0;
+						Fire.fireNo = 0;
+						long startTime = System.currentTimeMillis();
+						result = runSim(writer);
+						long stopTime = System.currentTimeMillis();
+					    long elapsedTime = stopTime - startTime;
+					    writer.write(Constants.delimiter + elapsedTime);
+					}
+					writer.write("\n");
 				}
-				writer.write("\n");
 			}
 			writer.close();
 			
@@ -126,7 +157,8 @@ public class Main {
 		window = new JFrame("Grid");  // Create a window with "Grid" in the title bar.
 		
 		EnvironmentParser envParser = new EnvironmentParser();
-		Grid grid = envParser.parseImage("../../environmentMaps/"+Constants.mapFile+".bmp");
+		Grid grid = envParser.parseImage(Constants.mapFile);
+		writer.write("" + Droid.droidNo);
 		
 		window.setContentPane(grid);  // Add the Grid panel to the window.
 		window.pack(); // Set the size of the window based on the panel's preferred size.
@@ -139,7 +171,7 @@ public class Main {
 		int w = (int) window.getWidth();
 		
 		StatWin statWin; // The object that represents the window.
-		statWin = new StatWin();  // Create a window with "Grid" in the title bar.
+		statWin = new StatWin(Constants.mapFile);  // Create a window with "Grid" in the title bar.
 		statWin.setVisible(true);
 		statWin.setLocationRelativeTo(window);
 		statWin.setLocation(w + 100, 0);
