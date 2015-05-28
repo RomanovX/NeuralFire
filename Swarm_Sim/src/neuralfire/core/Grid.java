@@ -112,13 +112,7 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 							(int) (y1 + cellHeight / 2));
 				}
 				
-				if (ObjGrid[row][col].getFireCounter() > 1) 
-				{
-					g2.setColor(new Color(0, 0, 0));
-					g2.drawString("" + ObjGrid[row][col].getFireCounter(),
-							(int) (x1 + cellWidth / 2),
-							(int) (y1 + cellHeight / 2));
-				}
+				
 				
 				// Debug path code
 				if (Constants.displayPheromoneLines) {
@@ -206,6 +200,13 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 								+ ObjGrid[row][col].getDownPath()
 										.getPheromoneIntensity(),
 								(int) (x1 + cellWidth / 2), y1);
+					if (ObjGrid[row][col].getFireCounter() > 1) 
+					{
+						g2.setColor(new Color(0, 0, 0));
+						g2.drawString("" + ObjGrid[row][col].getFireCounter(),
+								(int) (x1 + cellWidth / 2),
+								(int) (y1 + cellHeight / 2));
+					}
 				}
 			}
 		}
