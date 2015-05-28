@@ -29,7 +29,7 @@ public class Main {
 		int result = 0;
 		
 		try {
-			writer = new PrintWriter("SimResults.txt", "UTF-8");
+			writer = new PrintWriter("SimResults-"+System.currentTimeMillis()+".txt", "UTF-8");
 			
 			if(Constants.configuration == 1){
 				Constants.mapFile = "map1.bmp";
@@ -77,34 +77,51 @@ public class Main {
 			}else if (Constants.configuration == 7){
 				Constants.mapFile = "map6.bmp";
 			} else if (Constants.configuration == 8){
-				Constants.mapFile = "mapIO1.bmp";
-				Constants.fireRadius = 10;
-				Constants.yellRadius = 20;
 				Constants.yellVolume = 60;
 				Constants.scaleUI = 0.5;
 				Constants.pheromoneIncrease = 100;
-				Constants.pheromoneDecay = 0.02;
 				Constants.sleepDuration = 0;
 				Constants.displayPheromoneDots = true;
+				
+				
+				/* Simulation settings */
 				Constants.spawner = true;
 				Constants.useMapDirectory = true;
+				Constants.maxIterations = 100;
+				Constants.trials = 2;
+				Constants.fireRadi = new int[]{5, 10, 15};
+				Constants.yellRadi = new int[]{11, 22};
+				Constants.pheromoneDecays = new double[]{0.09, 0.15};
+				Constants.initialNumberOfDroids = 50;
+				Constants.numberOfDroidsIncrease = 50;
+				Constants.maxDroids = 100;
 				
+				
+				Constants.visualizeProgress = false;
+			} else if (Constants.configuration == 9){
+				Constants.yellVolume = 60;
+				Constants.scaleUI = 1;
+				Constants.pheromoneIncrease = 100;
+				Constants.sleepDuration = 0;
+				Constants.displayPheromoneDots = true;
+				
+				
+				/* Simulation settings */
+				Constants.spawner = true;
+				Constants.useMapDirectory = true;
+				Constants.maxIterations = 1000;
+				Constants.trials = 1;
+				Constants.fireRadi = new int[]{10};
+				Constants.yellRadi = new int[]{11};
+				Constants.pheromoneDecays = new double[]{0.09};
+				Constants.initialNumberOfDroids = 50;
+				Constants.numberOfDroidsIncrease = 50;
+				Constants.maxDroids = 50;
+				
+				
+				Constants.visualizeProgress = true;
 			}
 			
-			java.nio.file.Path currentRelativePath = Paths.get("");
-			String s = currentRelativePath.toAbsolutePath().toString();
-			List<String> maps = new ArrayList<String>();
-			if(Constants.useMapDirectory){
-				File directory = new File("src/environmentMaps/"+Constants.mapDirectory+"/");
-				for (final File fileEntry : directory.listFiles()) {
-			        if (!fileEntry.isDirectory()) {
-			        	maps.add("src/environmentMaps/"+Constants.mapDirectory+"/"+fileEntry.getName());
-			        }
-			    }
-			} 
-			else {
-				maps.add("src/environmentMaps/"+Constants.mapFile);
-			}
 			
 			writer.write("##################################\n");
 			writer.write("Configuration used:\n");
@@ -117,31 +134,82 @@ public class Main {
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			writer.write("##################################\n");
-			writer.write("Nr Of Droids, Run 1,Run 2,Run 3, Run 4, Run 5\n");
-			writer.write("##################################\n");
 			
+			java.nio.file.Path currentRelativePath = Paths.get("");
+			String s = currentRelativePath.toAbsolutePath().toString();
+			List<String> maps = new ArrayList<String>();
+			if(Constants.useMapDirectory){
+				writer.write("##################################\n");
+				writer.write("Map mapping:\n");
+				writer.write("##################################\n");
+				File directory = new File("src/environmentMaps/"+Constants.mapDirectory+"/");
+				int mapCount = 1;
+				for (final File fileEntry : directory.listFiles()) {
+			        if (!fileEntry.isDirectory()) {
+			        	String map ="src/environmentMaps/"+Constants.mapDirectory+"/"+fileEntry.getName(); 
+			        	maps.add(map);
+			        	writer.write(mapCount+" : "+map+"\n");
+			        	mapCount++;
+			        }
+			    }
+			} 
+			else {
+				maps.add("src/environmentMaps/"+Constants.mapFile);
+				writer.write("##################################\n");
+				writer.write("Map: src/environmentMaps/"+Constants.mapFile+"\n");
+				writer.write("##################################\n");
+			}
 			
+			writer.write("##################################\n");
+			writer.close();
+			String filename = "importMeToMatlab-"+System.currentTimeMillis()+".csv";
+			writer = new PrintWriter(filename, "UTF-8");
+			writer.write("In matlab use: \n");
+			writer.write("M = csvread('"+filename+"', 3)\n");
+			int totalRuns = writeheader(writer, maps.size());
+			int run = 1;
+			
+			int mapCount = 1;
 			for(String map : maps){
 				Constants.mapFile = map;
-				writer.write("Map: "+map+"\n");
 				for(int NumberOfDroids = Constants.initialNumberOfDroids; NumberOfDroids < Constants.maxDroids+1; NumberOfDroids = NumberOfDroids+Constants.numberOfDroidsIncrease){
 					Constants.droidsPerSpawner = NumberOfDroids;
-					for (int i = 0; i < Constants.trials ; i++){
-						Droid.droidNo = 0;
-						Fire.fireNo = 0;
-						long startTime = System.currentTimeMillis();
-						result = runSim(writer);
-						long stopTime = System.currentTimeMillis();
-					    long elapsedTime = stopTime - startTime;
-					    writer.write(Constants.delimiter + elapsedTime);
+					// write map
+					writer.write(mapCount+Constants.delimiter);
+					for(int fireIndex = 0; fireIndex < Constants.fireRadi.length; fireIndex++){
+						Constants.fireRadius = Constants.fireRadi[fireIndex];
+						// write fire
+						writer.write(Constants.fireRadius+Constants.delimiter);
+						for(int yellIndex = 0; yellIndex < Constants.yellRadi.length; yellIndex++){
+							Constants.yellRadius = Constants.yellRadi[yellIndex];
+							// write yelling
+							writer.write(Constants.yellRadius+Constants.delimiter);
+							for(int pheroIndex = 0; pheroIndex < Constants.pheromoneDecays.length; pheroIndex++){
+								Constants.pheromoneDecay = Constants.pheromoneDecays[pheroIndex];
+								// write pheromone decay
+								writer.write(Constants.pheromoneDecay+Constants.delimiter);
+								for (int i = 0; i < Constants.trials ; i++){
+									Droid.droidNo = 0;
+									Fire.fireNo = 0;
+									long startTime = System.currentTimeMillis();
+									result = runSim(writer);
+									long stopTime = System.currentTimeMillis();
+								    long elapsedTime = stopTime - startTime;
+								    // write time
+								    writer.write(Constants.delimiter + elapsedTime+Constants.delimiter);
+								    System.out.println("Run "+run+"/"+totalRuns);
+								    run++;
+								}
+							}
+						}
 					}
 					writer.write("\n");
 				}
+				mapCount++;
 			}
 			writer.close();
 			
-			
+			System.exit(0);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,6 +217,33 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private static int writeheader(PrintWriter writer, int mapCount){
+		int totalRuns = 0;
+		writer.write("Map"+Constants.delimiter);
+		for(int fireIndex = 0; fireIndex < Constants.fireRadi.length; fireIndex++){
+			writer.write("FireRadius "+(fireIndex+1)+Constants.delimiter);
+			for(int yellIndex = 0; yellIndex < Constants.yellRadi.length; yellIndex++){
+				writer.write("YellRadius "+(yellIndex+1)+Constants.delimiter);
+				for(int pheroIndex = 0; pheroIndex < Constants.pheromoneDecays.length; pheroIndex++){
+					writer.write("PheromoneDecay "+(pheroIndex+1)+Constants.delimiter);
+					for (int i = 0; i < Constants.trials ; i++){
+						writer.write("Nr. of Droids "+Constants.delimiter);
+						writer.write("Iter until "+((1-Constants.fireExtinguishedMilestone)*100) +"%" +Constants.delimiter);
+						writer.write("Iter fin"+Constants.delimiter);
+						writer.write("Time"+Constants.delimiter);
+						totalRuns++;
+					}
+				}
+			}
+		}
+	    int toolazy = 0;
+		for(int NumberOfDroids = Constants.initialNumberOfDroids; NumberOfDroids < Constants.maxDroids+1; NumberOfDroids = NumberOfDroids+Constants.numberOfDroidsIncrease){
+			toolazy++;
+		}
+		writer.write("\n");
+		return totalRuns*mapCount*toolazy;
 	}
 	
 	public static int runSim(PrintWriter writer) {

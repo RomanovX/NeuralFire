@@ -4,7 +4,7 @@ import java.awt.Color;
 
 
 public class Constants {
-	public static int configuration = 7;
+	public static int configuration = 8;
 	
 	public static enum Dir {
 		UP, DOWN, LEFT, RIGHT, STAY 
@@ -72,7 +72,7 @@ public class Constants {
 	 */
 	public static int maxIterations = 500;
 	public static double fireExtinguishedMilestone = 0.3;
-	public static String delimiter = ";";
+	public static String delimiter = ",";
 	public static int initialNumberOfDroids = 50;
 	public static int numberOfDroidsIncrease = 50;
 	public static int maxDroids = 100;
@@ -84,4 +84,7 @@ public class Constants {
 	public static String mapFile = "map2";
 	public static String mapDirectory = "testMaps";
 	public static boolean useMapDirectory = false;
+	public static int[] fireRadi = { 10 };
+	public static int[] yellRadi = { 10 };
+	public static double[] pheromoneDecays = { 0.09 };
 }
