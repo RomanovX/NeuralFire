@@ -3,6 +3,7 @@ package neuralfire.core;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
 
 import javax.imageio.ImageIO;
 
@@ -12,7 +13,7 @@ public class EnvironmentParser {
 		byte[] pixels = null;
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(Main.class.getResource(filename));
+			image = ImageIO.read(new File(Constants.mapFile));
 			pixels = ((DataBufferByte) image.getRaster().getDataBuffer())
 					.getData();
 		} catch (Exception e) {

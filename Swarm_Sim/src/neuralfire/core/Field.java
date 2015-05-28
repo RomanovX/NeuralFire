@@ -234,8 +234,6 @@ public class Field {
 			return new Color(brightness, brightness, 255);
 		}
 		
-		
-		
 		return Constants.floorColor;
 		
 	}

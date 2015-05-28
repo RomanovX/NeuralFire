@@ -226,13 +226,12 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 
 	public void Spin(Grid grid) {
 		if(!paused){
-			repaint();
+			if(Constants.visualizeProgress)
+				repaint();
 			clearYelling();
-			for (int k = 0; k < Constants.relays; k++) {
-				for (int i = 0; i < gridRows; i++) {
-					for (int j = 0; j < gridCols; j++) {
-						ObjGrid[i][j].relay(grid);
-					}
+			for (int i = 0; i < gridRows; i++) {
+				for (int j = 0; j < gridCols; j++) {
+					ObjGrid[i][j].relay(grid);
 				}
 			}
 	

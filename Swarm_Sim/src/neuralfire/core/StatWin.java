@@ -26,12 +26,13 @@ public class StatWin extends JFrame {
 	private JTextField FireNo;
 	private JLabel ItNo;
 	private JLabel lblComplete;
+	private JLabel lblMap;
 	private final Action action = new SwingAction();
 
 	/**
 	 * Create the frame.
 	 */
-	public StatWin() {
+	public StatWin(String map) {
 		setTitle("Statistics");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 327, 243);
@@ -116,6 +117,14 @@ public class StatWin extends JFrame {
 		gbc_lblComplete.gridx = 1;
 		gbc_lblComplete.gridy = 7;
 		contentPane.add(lblComplete, gbc_lblComplete);
+		
+		lblMap = new JLabel(map);
+		lblMap.setVisible(true);
+		GridBagConstraints gbc_lblMap = new GridBagConstraints();
+		gbc_lblMap.insets = new Insets(0, 0, 0, 5);
+		gbc_lblMap.gridx = 2;
+		gbc_lblMap.gridy = 7;
+		contentPane.add(lblMap, gbc_lblMap);
 	}
 	
 	public void updateValues(int droidNo, int fireNo, int itNo) {
