@@ -288,7 +288,7 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 
 	@Override
 	public boolean boardContains(int x, int y) {
-		return x > 0 && y > 0 && x < gridCols && y < gridRows;
+		return x > 0 && y > 0 && x < gridRows && y <gridCols;
 	}
 
 	@Override

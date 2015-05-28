@@ -74,7 +74,7 @@ public class Main {
 				Constants.fireRadius = 10;
 				Constants.yellRadius = 20;
 				Constants.yellVolume = 60;
-				Constants.scaleUI = 1;
+				Constants.scaleUI = 0.5;
 				Constants.pheromoneIncrease = 100;
 				Constants.pheromoneDecay = 0.02;
 				Constants.sleepDuration = 0;

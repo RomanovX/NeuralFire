@@ -31,30 +31,32 @@ public class WorldObject {
 		ILosAlgorithm a=new PrecisePermissive();
 		
 		
-		for(int x = row - radius;x < row + radius+1; x++)
+		for(int y = row - radius;y < row + radius+1; y++)
 		{
-			for(int y = col - radius;y < col + radius+1; y++)
+			for(int x = col - radius;x < col + radius+1; x++)
 			{
-
-				if((x >= 0) && (y >= 0) && (x <= grid.getGridRows()-1) && (y <= grid.getGridCols()-1))
+				int maxrow = grid.getGridRows();
+				int maxcol = grid.getGridCols();
+				
+				if((x >= 0) && (y >= 0) && (y <= maxrow-1) && (x <= maxcol-1))
 				{
-					dist = Math.abs(row - x) + Math.abs(col - y);
-					if(dist <= radius && a.existsLineOfSight(grid, row, col, x, y, false) && !grid.getField(x, y).isHasWall())
+					dist = Math.abs(row - y) + Math.abs(col - x);
+					if(dist <= radius && a.existsLineOfSight(grid, row, col, y, x, false) && !grid.getField(y, x).isHasWall())
 					//if(dist <= radius)
 					{
 						if(grid.getField(row, col).isHasDroid())
 						{
-							grid.getField(row-(row - x), col-(col - y)).setVolume(intensity - dist);
+							grid.getField(row-(row - y), col-(col - x)).setVolume(intensity - dist);
 						}
 						else if(grid.getField(row, col).isHasFire())
 						{
 							if(intensity == 0)
 							{
-								grid.getField(row-(row - x), col-(col - y)).clearIntensity();
+								grid.getField(row-(row - y), col-(col - x)).clearIntensity();
 							}
 							else
 							{
-								grid.getField(row-(row - x), col-(col - y)).setIntensity(intensity - dist);
+								grid.getField(row-(row - y), col-(col - x)).setIntensity(intensity - dist);
 							}
 						}
 					}
