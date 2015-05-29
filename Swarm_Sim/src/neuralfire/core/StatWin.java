@@ -8,15 +8,22 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Font;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
 import java.awt.Color;
+
 import javax.swing.AbstractAction;
+
 import java.awt.event.ActionEvent;
+import java.io.PrintWriter;
+
 import javax.swing.Action;
 
 public class StatWin extends JFrame {
@@ -27,12 +34,14 @@ public class StatWin extends JFrame {
 	private JLabel ItNo;
 	private JLabel lblComplete;
 	private JLabel lblMap;
-	private final Action action = new SwingAction();
+	
+	private final SwingAction action = new SwingAction();
 
 	/**
 	 * Create the frame.
 	 */
-	public StatWin(String map) {
+	public StatWin(String map, PrintWriter writer) {
+		action.writer = writer;
 		setTitle("Statistics");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 327, 243);
@@ -137,11 +146,13 @@ public class StatWin extends JFrame {
 	}
 
 	private class SwingAction extends AbstractAction {
+		public PrintWriter writer;
 		public SwingAction() {
 			putValue(NAME, "End Simulation");
 			putValue(SHORT_DESCRIPTION, "Ends the current simulation without closing the window");
 		}
 		public void actionPerformed(ActionEvent e) {
+			writer.close();
 			System.exit(1);
 		}
 	}

@@ -4,7 +4,7 @@ import java.awt.Color;
 
 
 public class Constants {
-	public static int configuration = 8;
+	public static int configuration = 9;
 	
 	public static enum Dir {
 		UP, DOWN, LEFT, RIGHT, STAY 

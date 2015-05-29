@@ -99,27 +99,27 @@ public class Main {
 				
 				Constants.visualizeProgress = false;
 			} else if (Constants.configuration == 9){
+				// CONFIGURATION FOR TESTING SIMULATOR VARIABELS
 				Constants.yellVolume = 60;
 				Constants.scaleUI = 1;
 				Constants.pheromoneIncrease = 100;
 				Constants.sleepDuration = 0;
 				Constants.displayPheromoneDots = true;
 				
-				
 				/* Simulation settings */
 				Constants.spawner = true;
+				//Constants.mapFile = "mapIO1.bmp";
 				Constants.useMapDirectory = true;
-				Constants.maxIterations = 1000;
-				Constants.trials = 1;
-				Constants.fireRadi = new int[]{10};
-				Constants.yellRadi = new int[]{11};
+				Constants.maxIterations = 6000;
+				Constants.trials = 10;
+				Constants.fireRadi = new int[]{3, 5, 7, 10, 15, 20, 25, 30};
+				Constants.yellRadi = new int[]{15};
 				Constants.pheromoneDecays = new double[]{0.09};
-				Constants.initialNumberOfDroids = 50;
-				Constants.numberOfDroidsIncrease = 50;
-				Constants.maxDroids = 50;
+				Constants.initialNumberOfDroids = 15;
+				Constants.numberOfDroidsIncrease = 15;
+				Constants.maxDroids = 105;
 				
-				
-				Constants.visualizeProgress = true;
+				Constants.visualizeProgress = false;
 			}
 			
 			
@@ -167,6 +167,7 @@ public class Main {
 			writer.write("In matlab use: \n");
 			writer.write("M = csvread('"+filename+"', 3)\n");
 			int totalRuns = writeheader(writer, maps.size());
+			System.out.println("Now starting "+totalRuns+" runs");
 			int run = 1;
 			
 			int mapCount = 1;
@@ -199,6 +200,7 @@ public class Main {
 								    writer.write(Constants.delimiter + elapsedTime+Constants.delimiter);
 								    System.out.println("Run "+run+"/"+totalRuns);
 								    run++;
+								    writer.flush();
 								}
 							}
 						}
@@ -229,10 +231,11 @@ public class Main {
 				for(int pheroIndex = 0; pheroIndex < Constants.pheromoneDecays.length; pheroIndex++){
 					writer.write("PheromoneDecay "+(pheroIndex+1)+Constants.delimiter);
 					for (int i = 0; i < Constants.trials ; i++){
-						writer.write("Nr. of Droids "+Constants.delimiter);
-						writer.write("Iter until "+((1-Constants.fireExtinguishedMilestone)*100) +"%" +Constants.delimiter);
-						writer.write("Iter fin"+Constants.delimiter);
-						writer.write("Time"+Constants.delimiter);
+						writer.write("Trial"+i+": Nr. of Droids "+Constants.delimiter);
+						writer.write("Trial"+i+": Iter until "+((1-Constants.fireExtinguishedMilestone)*100) +"%" +Constants.delimiter);
+						writer.write("Trial"+i+": Iter fin"+Constants.delimiter);
+						writer.write("Trial"+i+": Percentag fire remaining"+Constants.delimiter);
+						writer.write("Trial"+i+": Time"+Constants.delimiter);
 						totalRuns++;
 					}
 				}
@@ -266,7 +269,7 @@ public class Main {
 		int w = (int) window.getWidth();
 		
 		StatWin statWin; // The object that represents the window.
-		statWin = new StatWin(Constants.mapFile);  // Create a window with "Grid" in the title bar.
+		statWin = new StatWin(Constants.mapFile, writer);  // Create a window with "Grid" in the title bar.
 		statWin.setVisible(true);
 		statWin.setLocationRelativeTo(window);
 		statWin.setLocation(w + 100, 0);
@@ -302,9 +305,13 @@ public class Main {
 		// Check if all fires were extinguished
 		if(Fire.fireNo != 0){
 			writer.write(Constants.delimiter+"-1");
+			writer.write(Constants.delimiter+((double)Fire.fireNo)/initialFireNumber);
 		} else {
 			writer.write(Constants.delimiter+itNo);
+			writer.write(Constants.delimiter+"1.0");
 		}
+		
+		
 		
 		
 		window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
