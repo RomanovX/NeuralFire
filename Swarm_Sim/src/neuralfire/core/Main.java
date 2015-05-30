@@ -110,15 +110,14 @@ public class Main {
 				Constants.spawner = true;
 				//Constants.mapFile = "mapIO1.bmp";
 				Constants.useMapDirectory = true;
-				Constants.maxIterations = 6000;
+				Constants.maxIterations = 5000;
 				Constants.trials = 10;
 				Constants.fireRadi = new int[]{3, 5, 7, 10, 15, 20, 25, 30};
 				Constants.yellRadi = new int[]{15};
 				Constants.pheromoneDecays = new double[]{0.09};
-				Constants.initialNumberOfDroids = 15;
-				Constants.numberOfDroidsIncrease = 15;
-				Constants.maxDroids = 105;
-				
+				Constants.initialNumberOfDroids = 20;
+				Constants.numberOfDroidsIncrease = 20;
+				Constants.maxDroids = 80;
 				Constants.visualizeProgress = false;
 			}
 			
@@ -194,6 +193,7 @@ public class Main {
 									Fire.fireNo = 0;
 									long startTime = System.currentTimeMillis();
 									result = runSim(writer);
+									System.gc();
 									long stopTime = System.currentTimeMillis();
 								    long elapsedTime = stopTime - startTime;
 								    // write time
@@ -201,6 +201,19 @@ public class Main {
 								    System.out.println("Run "+run+"/"+totalRuns);
 								    run++;
 								    writer.flush();
+								    
+								    Runtime runtime = Runtime.getRuntime();
+
+								    StringBuilder sb = new StringBuilder();
+								    long maxMemory = runtime.maxMemory();
+								    long allocatedMemory = runtime.totalMemory();
+								    long freeMemory = runtime.freeMemory();
+
+								    sb.append("free memory: " + freeMemory / 1024 + "\n");
+								    sb.append("allocated memory: " + allocatedMemory / 1024+ "\n");
+								    sb.append("max memory: " + maxMemory / 1024+ "\n");
+								    sb.append("total free memory: " + (freeMemory + (maxMemory - allocatedMemory)) / 1024 + "\n");
+								    System.out.println(sb.toString());
 								}
 							}
 						}
@@ -263,14 +276,14 @@ public class Main {
 
 		window.setResizable(false);
 		//window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setVisible(true);
+		window.setVisible(Constants.visualizeProgress);
 		window.addKeyListener(grid);
 		
 		int w = (int) window.getWidth();
 		
 		StatWin statWin; // The object that represents the window.
 		statWin = new StatWin(Constants.mapFile, writer);  // Create a window with "Grid" in the title bar.
-		statWin.setVisible(true);
+		statWin.setVisible(Constants.visualizeProgress);
 		statWin.setLocationRelativeTo(window);
 		statWin.setLocation(w + 100, 0);
 
@@ -312,10 +325,10 @@ public class Main {
 		}
 		
 		
-		
-		
 		window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
 		statWin.dispatchEvent(new WindowEvent(statWin, WindowEvent.WINDOW_CLOSING));
+		window.dispose();
+		statWin.dispose();
 		return itNo;
 	}
 }
