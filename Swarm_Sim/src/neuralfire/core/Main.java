@@ -17,13 +17,18 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
-public class Main {
+public class Main implements Runnable{
+	
+	private boolean done = false;
+	private String result;
 
+	
 	/**
 	 * This main routine creates a window and sets its content
 	 * to be a panel of type Grid.  It shows the window in the
 	 * center of the screen.
 	 */
+	 
 	public static void main(String[] args) {
 		PrintWriter writer;
 		int result = 0;
@@ -262,14 +267,15 @@ public class Main {
 		return totalRuns*mapCount*toolazy;
 	}
 	
-	public static int runSim(PrintWriter writer) {
+	public String runSim() {
+		String result = new String();
 		
 		JFrame window; // The object that represents the window.
 		window = new JFrame("Grid");  // Create a window with "Grid" in the title bar.
 		
 		EnvironmentParser envParser = new EnvironmentParser();
 		Grid grid = envParser.parseImage(Constants.mapFile);
-		writer.write("" + Droid.droidNo);
+		result.concat("" + Droid.droidNo);
 		
 		window.setContentPane(grid);  // Add the Grid panel to the window.
 		window.pack(); // Set the size of the window based on the panel's preferred size.
@@ -282,7 +288,7 @@ public class Main {
 		int w = (int) window.getWidth();
 		
 		StatWin statWin; // The object that represents the window.
-		statWin = new StatWin(Constants.mapFile, writer);  // Create a window with "Grid" in the title bar.
+		statWin = new StatWin(Constants.mapFile);  // Create a window with "Grid" in the title bar.
 		statWin.setVisible(Constants.visualizeProgress);
 		statWin.setLocationRelativeTo(window);
 		statWin.setLocation(w + 100, 0);
@@ -296,7 +302,7 @@ public class Main {
 		{
 			if(!grid.isPaused()){
 				if(((double)Fire.fireNo)/initialFireNumber < Constants.fireExtinguishedMilestone && !milestoneReached){
-					writer.write(Constants.delimiter+itNo);
+					result.concat(Constants.delimiter+itNo);
 					milestoneReached = true;
 				}
 				
@@ -309,19 +315,26 @@ public class Main {
 			} catch(InterruptedException ex) {
 			    Thread.currentThread().interrupt();
 			}
+			
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		// check if fire extinguishing milestone was not reached
 		if(!milestoneReached){
-			writer.write(Constants.delimiter+"-1");
+			result.concat(Constants.delimiter+"-1");
 		}
 		// Check if all fires were extinguished
 		if(Fire.fireNo != 0){
-			writer.write(Constants.delimiter+"-1");
-			writer.write(Constants.delimiter+((double)Fire.fireNo)/initialFireNumber);
+			result.concat(Constants.delimiter+"-1");
+			result.concat(Constants.delimiter+((double)Fire.fireNo)/initialFireNumber);
 		} else {
-			writer.write(Constants.delimiter+itNo);
-			writer.write(Constants.delimiter+"1.0");
+			result.concat(Constants.delimiter+itNo);
+			result.concat(Constants.delimiter+"1.0");
 		}
 		
 		
@@ -329,6 +342,28 @@ public class Main {
 		statWin.dispatchEvent(new WindowEvent(statWin, WindowEvent.WINDOW_CLOSING));
 		window.dispose();
 		statWin.dispose();
-		return itNo;
+		return result;
+	}
+
+	@Override
+	public void run() {
+		result = runSim();
+		
+		ResultPrinter printer = new ResultPrinter();
+		boolean done = false;
+			
+		while(!done){
+			if(printer.getWriterInUse()){
+				done = printer.WriteLine(result);
+				break;
+			}
+			
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

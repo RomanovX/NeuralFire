@@ -40,8 +40,7 @@ public class StatWin extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public StatWin(String map, PrintWriter writer) {
-		action.writer = writer;
+	public StatWin(String map) {
 		setTitle("Statistics");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 327, 243);
@@ -146,13 +145,11 @@ public class StatWin extends JFrame {
 	}
 
 	private class SwingAction extends AbstractAction {
-		public PrintWriter writer;
 		public SwingAction() {
 			putValue(NAME, "End Simulation");
 			putValue(SHORT_DESCRIPTION, "Ends the current simulation without closing the window");
 		}
 		public void actionPerformed(ActionEvent e) {
-			writer.close();
 			System.exit(1);
 		}
 	}
