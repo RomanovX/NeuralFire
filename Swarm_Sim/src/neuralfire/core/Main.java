@@ -112,9 +112,10 @@ public class Main {
 				Constants.useMapDirectory = true;
 				Constants.maxIterations = 5000;
 				Constants.trials = 10;
-				Constants.fireRadi = new int[]{3, 5, 7, 10, 15, 20, 25, 30};
-				Constants.yellRadi = new int[]{15};
-				Constants.pheromoneDecays = new double[]{0.09};
+				Constants.fireRadi = new int[]{10}; // fixed to 10 based on previous evaluation
+				Constants.yellRadi = new int[]{11, 13, 15, 20, 25};
+				Constants.yellRelays= new int[]{ 1, 2, 3, 4 };
+				Constants.pheromoneDecays = new double[]{0.005, 0.01, 0.05, 0.1, 0.2, 0.5};
 				Constants.initialNumberOfDroids = 20;
 				Constants.numberOfDroidsIncrease = 20;
 				Constants.maxDroids = 80;
@@ -181,39 +182,45 @@ public class Main {
 						// write fire
 						writer.write(Constants.fireRadius+Constants.delimiter);
 						for(int yellIndex = 0; yellIndex < Constants.yellRadi.length; yellIndex++){
-							Constants.yellRadius = Constants.yellRadi[yellIndex];
+							Constants.yellRadius = Constants.yellRadi[yellIndex];							
 							// write yelling
 							writer.write(Constants.yellRadius+Constants.delimiter);
-							for(int pheroIndex = 0; pheroIndex < Constants.pheromoneDecays.length; pheroIndex++){
-								Constants.pheromoneDecay = Constants.pheromoneDecays[pheroIndex];
-								// write pheromone decay
-								writer.write(Constants.pheromoneDecay+Constants.delimiter);
-								for (int i = 0; i < Constants.trials ; i++){
-									Droid.droidNo = 0;
-									Fire.fireNo = 0;
-									long startTime = System.currentTimeMillis();
-									result = runSim(writer);
-									System.gc();
-									long stopTime = System.currentTimeMillis();
-								    long elapsedTime = stopTime - startTime;
-								    // write time
-								    writer.write(Constants.delimiter + elapsedTime+Constants.delimiter);
-								    System.out.println("Run "+run+"/"+totalRuns);
-								    run++;
-								    writer.flush();
-								    
-								    Runtime runtime = Runtime.getRuntime();
-
-								    StringBuilder sb = new StringBuilder();
-								    long maxMemory = runtime.maxMemory();
-								    long allocatedMemory = runtime.totalMemory();
-								    long freeMemory = runtime.freeMemory();
-
-								    sb.append("free memory: " + freeMemory / 1024 + "\n");
-								    sb.append("allocated memory: " + allocatedMemory / 1024+ "\n");
-								    sb.append("max memory: " + maxMemory / 1024+ "\n");
-								    sb.append("total free memory: " + (freeMemory + (maxMemory - allocatedMemory)) / 1024 + "\n");
-								    System.out.println(sb.toString());
+							for(int yellRelayIndex = 0; yellRelayIndex < Constants.yellRelays.length; yellRelayIndex++){
+								Constants.yellRelay = Constants.yellRelays[yellRelayIndex];
+								Constants.yellVolume = Constants.yellRadius * Constants.yellRelay;
+								// write yell relay
+								writer.write(Constants.yellRelay+Constants.delimiter);							
+								for(int pheroIndex = 0; pheroIndex < Constants.pheromoneDecays.length; pheroIndex++){
+									Constants.pheromoneDecay = Constants.pheromoneDecays[pheroIndex];
+									// write pheromone decay
+									writer.write(Constants.pheromoneDecay+Constants.delimiter);
+									for (int i = 0; i < Constants.trials ; i++){
+										Droid.droidNo = 0;
+										Fire.fireNo = 0;
+										long startTime = System.currentTimeMillis();
+										result = runSim(writer);
+										System.gc();
+										long stopTime = System.currentTimeMillis();
+									    long elapsedTime = stopTime - startTime;
+									    // write time
+									    writer.write(Constants.delimiter + elapsedTime+Constants.delimiter);
+									    System.out.println("Run "+run+"/"+totalRuns);
+									    run++;
+									    writer.flush();
+									    
+									    Runtime runtime = Runtime.getRuntime();
+	
+									    StringBuilder sb = new StringBuilder();
+									    long maxMemory = runtime.maxMemory();
+									    long allocatedMemory = runtime.totalMemory();
+									    long freeMemory = runtime.freeMemory();
+	
+									    sb.append("free memory: " + freeMemory / 1024 + "\n");
+									    sb.append("allocated memory: " + allocatedMemory / 1024+ "\n");
+									    sb.append("max memory: " + maxMemory / 1024+ "\n");
+									    sb.append("total free memory: " + (freeMemory + (maxMemory - allocatedMemory)) / 1024 + "\n");
+									    System.out.println(sb.toString());
+									}
 								}
 							}
 						}
@@ -241,15 +248,18 @@ public class Main {
 			writer.write("FireRadius "+(fireIndex+1)+Constants.delimiter);
 			for(int yellIndex = 0; yellIndex < Constants.yellRadi.length; yellIndex++){
 				writer.write("YellRadius "+(yellIndex+1)+Constants.delimiter);
-				for(int pheroIndex = 0; pheroIndex < Constants.pheromoneDecays.length; pheroIndex++){
-					writer.write("PheromoneDecay "+(pheroIndex+1)+Constants.delimiter);
-					for (int i = 0; i < Constants.trials ; i++){
-						writer.write("Trial"+i+": Nr. of Droids "+Constants.delimiter);
-						writer.write("Trial"+i+": Iter until "+((1-Constants.fireExtinguishedMilestone)*100) +"%" +Constants.delimiter);
-						writer.write("Trial"+i+": Iter fin"+Constants.delimiter);
-						writer.write("Trial"+i+": Percentag fire remaining"+Constants.delimiter);
-						writer.write("Trial"+i+": Time"+Constants.delimiter);
-						totalRuns++;
+				for(int yellRelayIndex = 0; yellRelayIndex < Constants.yellRelays.length; yellRelayIndex++){
+					writer.write("Yell relay "+(yellRelayIndex+1)+Constants.delimiter);
+					for(int pheroIndex = 0; pheroIndex < Constants.pheromoneDecays.length; pheroIndex++){
+						writer.write("PheromoneDecay "+(pheroIndex+1)+Constants.delimiter);
+						for (int i = 0; i < Constants.trials ; i++){
+							writer.write("Trial"+i+": Nr. of Droids "+Constants.delimiter);
+							writer.write("Trial"+i+": Iter until "+((1-Constants.fireExtinguishedMilestone)*100) +"%" +Constants.delimiter);
+							writer.write("Trial"+i+": Iter fin"+Constants.delimiter);
+							writer.write("Trial"+i+": Percentag fire remaining"+Constants.delimiter);
+							writer.write("Trial"+i+": Time"+Constants.delimiter);
+							totalRuns++;
+						}
 					}
 				}
 			}
