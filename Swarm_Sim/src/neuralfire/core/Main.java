@@ -113,8 +113,8 @@ public class Main {
 				Constants.maxIterations = 5000;
 				Constants.trials = 10;
 				Constants.fireRadi = new int[]{10}; // fixed to 10 based on previous evaluation
-				Constants.yellRadi = new int[]{11, 13, 15, 20, 25};
-				Constants.yellRelays= new int[]{ 1, 2, 3, 4 };
+				Constants.yellRadi = new int[]{1, 3, 5, 7, 9, 11, 13, 15, 20, 25};
+				Constants.yellRelays= new int[]{ 0, 1, 2, 3, 4 };
 				Constants.pheromoneDecays = new double[]{0.005, 0.01, 0.05, 0.1, 0.2, 0.5};
 				Constants.initialNumberOfDroids = 20;
 				Constants.numberOfDroidsIncrease = 20;
