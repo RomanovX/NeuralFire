@@ -200,8 +200,6 @@ public class Main implements Runnable{
 									// write pheromone decay
 									writer.write(Constants.pheromoneDecay+Constants.delimiter);
 									for (int i = 0; i < Constants.trials ; i++){
-										Droid.droidNo = 0;
-										Fire.fireNo = 0;
 										long startTime = System.currentTimeMillis();
 										result = runSim(writer);
 										System.gc();
@@ -285,7 +283,7 @@ public class Main implements Runnable{
 		
 		EnvironmentParser envParser = new EnvironmentParser();
 		Grid grid = envParser.parseImage(Constants.mapFile);
-		result.concat("" + Droid.droidNo);
+		result.concat("" + Droid.droidNo.get());
 		
 		window.setContentPane(grid);  // Add the Grid panel to the window.
 		window.pack(); // Set the size of the window based on the panel's preferred size.

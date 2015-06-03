@@ -3,12 +3,17 @@ package neuralfire.core;
 import java.util.Random;
 
 public class Droid extends WorldObject{
-	public static int droidNo = 0;
+	public static ThreadLocal<Integer> droidNo;
 	
 	public Droid(){
+		if(droidNo == null){
+			droidNo = new ThreadLocal<Integer>();
+			droidNo.set(0);
+		}
+		
 		movable = true;
 		stackable = true;
-		droidNo++;
+		droidNo.set(droidNo.get() + 1);
 	}
 	
 	public void relay(Grid grid,int row, int col){
