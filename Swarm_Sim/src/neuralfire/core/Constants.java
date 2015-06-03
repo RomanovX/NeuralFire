@@ -49,7 +49,8 @@ public class Constants {
 	public static double volumeDecay = 2;
 	public static double volumeDecayThreshold = 1;
 	public static int yellRadius = 50;
-	public static int yellVolume = yellRadius;
+	public static int yellVolume = 50;
+	public static int yellRelay = 3;
 	
 	/*
 	 * FIRE
@@ -86,5 +87,6 @@ public class Constants {
 	public static boolean useMapDirectory = false;
 	public static int[] fireRadi = { 10 };
 	public static int[] yellRadi = { 10 };
+	public static int[] yellRelays = { 3 };
 	public static double[] pheromoneDecays = { 0.09 };
 }
