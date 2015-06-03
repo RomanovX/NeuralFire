@@ -5,12 +5,17 @@ import java.util.Random;
 import neuralfire.core.Constants.Dir;
 
 public class Fire extends WorldObject{
-	public static int fireNo = 0;
+	public static ThreadLocal<Integer> fireNo;
 
 	public Fire(){
+		if(fireNo == null){
+			fireNo = new ThreadLocal<Integer>();
+			fireNo.set(0);
+		}
+		
 		movable = false;
 		stackable = false;
-		fireNo++;
+		fireNo.set(fireNo.get() + 1);
 	}
 
 	
@@ -35,7 +40,7 @@ public class Fire extends WorldObject{
 		}
 		else {
 			this.spread(grid, row, col, Constants.fireRadius, 0);
-			fireNo--;
+			fireNo.set(fireNo.get() + 1);
 			thisFire.clearFireCounter();
 		}	
 		

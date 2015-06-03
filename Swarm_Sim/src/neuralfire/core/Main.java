@@ -306,19 +306,19 @@ public class Main implements Runnable{
 		grid.finalizeSimStep();
 		
 		int itNo = 0;
-		double initialFireNumber = Fire.fireNo;
+		double initialFireNumber = Fire.fireNo.get();
 		boolean milestoneReached = false;
-		while(Fire.fireNo != 0 && itNo < Constants.maxIterations)
+		while(Fire.fireNo.get() != 0 && itNo < Constants.maxIterations)
 		{
 			if(!grid.isPaused()){
-				if(((double)Fire.fireNo)/initialFireNumber < Constants.fireExtinguishedMilestone && !milestoneReached){
+				if(((double)Fire.fireNo.get())/initialFireNumber < Constants.fireExtinguishedMilestone && !milestoneReached){
 					result.concat(Constants.delimiter+itNo);
 					milestoneReached = true;
 				}
 				
 				itNo++;
 				grid.Spin(grid);
-				statWin.updateValues(Droid.droidNo, Fire.fireNo, itNo);
+				statWin.updateValues(Droid.droidNo, Fire.fireNo.get(), itNo);
 			}
 			try {
 			    Thread.sleep(Constants.sleepDuration);                 //200 milliseconds is one second.
@@ -339,9 +339,9 @@ public class Main implements Runnable{
 			result.concat(Constants.delimiter+"-1");
 		}
 		// Check if all fires were extinguished
-		if(Fire.fireNo != 0){
+		if(Fire.fireNo.get() != 0){
 			result.concat(Constants.delimiter+"-1");
-			result.concat(Constants.delimiter+((double)Fire.fireNo)/initialFireNumber);
+			result.concat(Constants.delimiter+((double)Fire.fireNo.get())/initialFireNumber);
 		} else {
 			result.concat(Constants.delimiter+itNo);
 			result.concat(Constants.delimiter+"1.0");
