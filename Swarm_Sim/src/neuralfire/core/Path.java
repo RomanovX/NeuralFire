@@ -9,10 +9,13 @@ public class Path {
 	private int droidsPassed = 0;
 	public static double currentMaxPheromone = 1;
 	
+	private double pheromoneDecay = 0;
 	
-	public Path(Field firstField, Field secondField){
+	
+	public Path(Field firstField, Field secondField, double pheromoneDecay){
 		this.firstField = firstField;
 		this.secondField = secondField;
+		this.pheromoneDecay = pheromoneDecay;
 	}
 
 	public double getPheromoneIntensity() {
@@ -45,7 +48,7 @@ public class Path {
 	}
 	
 	private void doPheromoneUpdate(){
-		pheromoneIntensity = (1 - Constants.pheromoneDecay)*oldPheromoneIntensity+ pheromoneIncrease;
+		pheromoneIntensity = (1 - pheromoneDecay)*oldPheromoneIntensity+ pheromoneIncrease;
 		if( pheromoneIntensity < Constants.pheromoneZeroThreshold)
 			pheromoneIntensity = 0;
 		oldPheromoneIntensity = pheromoneIntensity;

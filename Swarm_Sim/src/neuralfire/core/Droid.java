@@ -3,26 +3,25 @@ package neuralfire.core;
 import java.util.Random;
 
 public class Droid extends WorldObject{
-	public static ThreadLocal<Integer> droidNo;
 	
-	public Droid(){
-		if(droidNo == null){
-			droidNo = new ThreadLocal<Integer>();
-			droidNo.set(0);
-		}
-		
+	int yellRadius;
+	int yellVolume;
+	
+	public Droid(int YellVolume, int YellRadius){
 		movable = true;
 		stackable = true;
-		droidNo.set(droidNo.get() + 1);
+		
+		yellRadius = YellRadius;
+		yellVolume = YellVolume;
 	}
 	
 	public void relay(Grid grid,int row, int col){
 		
 		if(doFireWalk(grid, row, col)){
-			this.spread(grid, row, col, Constants.yellRadius, Constants.yellVolume);
+			this.spread(grid, row, col, yellRadius, yellVolume);
 		}
 		else if (followYelling(grid, row, col)){
-			this.spread(grid, row, col, Constants.yellRadius, grid.getField(row, col).getVolume());
+			this.spread(grid, row, col, yellRadius, grid.getField(row, col).getVolume());
 		} 
 	}
 	
@@ -32,7 +31,7 @@ public class Droid extends WorldObject{
 		
 		// TODO include this once firewalk is implemented
 		if(doFireWalk(grid, row, col)){
-			this.spread(grid, row, col, Constants.yellRadius,Constants.yellVolume);
+			this.spread(grid, row, col, yellRadius,yellVolume);
 			walk = new FireWalk();
 		}
 		else if (followYelling(grid, row, col)){

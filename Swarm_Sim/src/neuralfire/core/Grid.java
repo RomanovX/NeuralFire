@@ -29,6 +29,9 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 	private Field[][] ObjGrid = new Field[350][350];
 	private ArrayList<Path> paths;
 	private boolean paused = false;
+	
+	private int fireLeft = 1;
+	private int numDroids = 0;
 
 	/**
 	 * This constructor creates a panel with a specified number of rows and
@@ -47,7 +50,7 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 	 *            respect the preferred size. (Note that the "squares" might
 	 *            become rectangles if the preferred size is not respected.)
 	 */
-	public Grid(int rows, int columns, int preferredSquareSize) {
+	public Grid(int rows, int columns, int preferredSquareSize, double pheromoneDecay) {
 		
 		gridRows = rows;
 		gridCols = columns;
@@ -58,14 +61,14 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 			for (int j = 0; j < gridCols; j++) {
 				ObjGrid[i][j] = new Field(i, j, this);
 				if (i - 1 >= 0) {
-					Path path = new Path(ObjGrid[i][j], ObjGrid[i - 1][j]);
+					Path path = new Path(ObjGrid[i][j], ObjGrid[i - 1][j], pheromoneDecay);
 					ObjGrid[i][j].AddPath(path, Constants.Dir.UP);
 					ObjGrid[i - 1][j].AddPath(path, Constants.Dir.DOWN);
 					paths.add(path);
 
 				}
 				if (j - 1 >= 0) {
-					Path path = new Path(ObjGrid[i][j], ObjGrid[i][j - 1]);
+					Path path = new Path(ObjGrid[i][j], ObjGrid[i][j - 1], pheromoneDecay);
 					ObjGrid[i][j].AddPath(path, Constants.Dir.LEFT);
 					ObjGrid[i][j - 1].AddPath(path, Constants.Dir.RIGHT);
 					paths.add(path);
@@ -235,9 +238,18 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 				}
 			}
 	
+			fireLeft = 0;
+			numDroids=0;	
+			
 			for (int i = 0; i < gridRows; i++) {
 				for (int j = 0; j < gridCols; j++) {
 					ObjGrid[i][j].UpdateField(grid);
+					
+					if(ObjGrid[i][j].isHasFire())
+						fireLeft++;
+					
+					if(ObjGrid[i][j].isHasDroid())
+						numDroids++;
 				}
 			}
 	
@@ -317,7 +329,13 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 			paused = !paused;
 	}
 	
+	public int getFireLeft(){
+		return fireLeft;
+	}
 	
+	public int getNumDroids(){
+		return numDroids;
+	}
 	
 	public boolean isPaused() {
 		return paused;

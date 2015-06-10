@@ -33,6 +33,7 @@ public class ResultPrinter {
 		boolean result = false;
 		if(writerInUse.compareAndSet(false, true)){
 			writer.write(str);
+			writer.flush();
 			result = true;
 			writerInUse.set(false);
 		}

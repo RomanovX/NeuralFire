@@ -77,7 +77,7 @@ public class Constants {
 	public static int initialNumberOfDroids = 50;
 	public static int numberOfDroidsIncrease = 50;
 	public static int maxDroids = 100;
-	public static int trials = 1;
+	public static int trials = 10;
 	public static boolean visualizeProgress = true;
 	public static boolean spawner = true;
 	public static int droidsPerSpawner = 10;
