@@ -193,6 +193,7 @@ public class Main {
 									ExecutorService executor = Executors.newFixedThreadPool(nrOfProcessors);
 									
 									System.gc(); /*force clean up old executor and threads*/
+									long startTime = System.currentTimeMillis();
 									
 									for (int i = 0; i < Constants.trials ; i++){
 										SimRunner newSim = new SimRunner(i);
@@ -204,6 +205,9 @@ public class Main {
 									
 									executor.shutdown();
 									executor.awaitTermination(600, TimeUnit.SECONDS);
+									long stopTime = System.currentTimeMillis();
+								    long elapsedTime = stopTime - startTime;
+								    System.out.println(elapsedTime+ " "+(elapsedTime/1000));
 									
 									System.out.println("Run "+run*Constants.trials+"/"+totalRuns);
 									run++;
