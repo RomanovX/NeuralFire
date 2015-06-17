@@ -32,6 +32,9 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 	
 	private int fireLeft = 1;
 	private int numDroids = 0;
+	
+	private int initialDroidCount;
+	private int initialFireCount;
 
 	/**
 	 * This constructor creates a panel with a specified number of rows and
@@ -339,6 +342,22 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 	
 	public boolean isPaused() {
 		return paused;
+	}
+
+	public int getInitialDroidCount() {
+		return initialDroidCount;
+	}
+
+	public void setInitialDroidCount(int initialDroidCount) {
+		this.initialDroidCount = initialDroidCount;
+	}
+
+	public int getInitialFireCount() {
+		return initialFireCount;
+	}
+
+	public void setInitialFireCount(int initialFireCount) {
+		this.initialFireCount = initialFireCount;
 	}
 
 } // end class Grid

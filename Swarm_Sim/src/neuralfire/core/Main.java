@@ -68,25 +68,27 @@ public class Main {
 			}else if (Constants.configuration == 7){
 				Constants.mapFile = "map6.bmp";
 			} else if (Constants.configuration == 8){
+				Constants.mapFile = "mapIO1.bmp";
 				Constants.yellVolume = 60;
-				Constants.scaleUI = 0.5;
+				Constants.scaleUI = 1;
 				Constants.pheromoneIncrease = 100;
-				Constants.sleepDuration = 0;
+				Constants.sleepDuration = 250;
 				Constants.displayPheromoneDots = true;
 				
 				
 				/* Simulation settings */
 				Constants.spawner = true;
-				Constants.useMapDirectory = true;
-				Constants.maxIterations = 100;
+				Constants.useMapDirectory = false;
+				Constants.maxIterations = 2000;
 				Constants.trials = 2;
-				Constants.fireRadi = new int[]{5, 10, 15};
-				Constants.yellRadi = new int[]{11, 22};
-				Constants.pheromoneDecays = new double[]{0.09, 0.15};
+				Constants.fireRadi = new int[]{7};
+				Constants.yellRadi = new int[]{3};
+				Constants.yellRelays= new int[]{ 8 };
+				Constants.yellVolume = 80;
+				Constants.pheromoneDecays = new double[]{0.09};
 				Constants.initialNumberOfDroids = 50;
 				Constants.numberOfDroidsIncrease = 50;
-				Constants.maxDroids = 100;
-				
+				Constants.maxDroids = 50;
 				
 				Constants.visualizeProgress = true;
 			} else if (Constants.configuration == 9){
@@ -105,7 +107,7 @@ public class Main {
 				Constants.trials = 8;
 				Constants.fireRadi = new int[]{10}; // fixed to 10 based on previous evaluation
 				Constants.yellRadi = new int[]{1,3, 5, 7, 9, 11, 13, 15, 20, 25};
-				Constants.yellRelays= new int[]{ 0, 1, 2, 3, 4 };
+				Constants.yellRelays= new int[]{ 1, 2, 3, 4 };
 				Constants.pheromoneDecays = new double[]{0.005, 0.01, 0.05, 0.1, 0.2, 0.5};
 				Constants.initialNumberOfDroids = 20;
 				Constants.numberOfDroidsIncrease = 20;
@@ -193,7 +195,7 @@ public class Main {
 									System.gc(); /*force clean up old executor and threads*/
 									
 									for (int i = 0; i < Constants.trials ; i++){
-										SimRunner newSim = new SimRunner();
+										SimRunner newSim = new SimRunner(i);
 										Thread newThread = new Thread(newSim);
 										threadList.add(newThread);
 										executor.execute(newThread);

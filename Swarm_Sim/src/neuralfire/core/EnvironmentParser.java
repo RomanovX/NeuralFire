@@ -27,6 +27,8 @@ public class EnvironmentParser {
 		int blue = 0;
 		int red = 0;
 		int green = 0;
+		int droidCount = 0;
+		int fireCount = 0;
 		for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
 
 			blue = ((int) pixels[pixel] & 0xff);
@@ -36,18 +38,23 @@ public class EnvironmentParser {
 			Color fieldColor = new Color(red, green, blue);
 			if (fieldColor.equals(Constants.fireColor)) {
 				grid.AddObject(row, col, new Fire());
+				fireCount++;
 
 			} else if (fieldColor.equals(Constants.wallColor)) {
 				grid.AddObject(row, col, new Wall());
 				
 			} else if (green > 0 && blue == 0 && red == 00) {
 				if (!Constants.spawner){
-					for (int i = 0; i < green; i++)
+					for (int i = 0; i < green; i++){
 						grid.AddObject(row, col, new Droid(yellVolume,yellRadius));
+						droidCount++;
+					}
 				}
 				else{
-					for (int i = 0; i < Constants.droidsPerSpawner; i++)
+					for (int i = 0; i < Constants.droidsPerSpawner; i++){
 						grid.AddObject(row, col, new Droid(yellVolume,yellRadius));
+						droidCount++;
+					}
 				}
 			}
 
@@ -57,6 +64,8 @@ public class EnvironmentParser {
 				row++;
 			}
 		}
+		grid.setInitialDroidCount(droidCount);
+		grid.setInitialFireCount(fireCount);
 		return grid;
 	}
 

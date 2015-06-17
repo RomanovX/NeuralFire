@@ -12,22 +12,27 @@ public class SimRunner implements Runnable{
 	String mapFile;
 	double pheromoneDecay;
 	int yellRadius;
+	int yellVolume;
 	int yellRelay;
+	int fireRadius;
 
 	
-	SimRunner(){
+	SimRunner(int trialNumber){
 		EnvironmentParser envParser = new EnvironmentParser();
 		
 		droidsPerSpawner = Constants.droidsPerSpawner;
 		mapFile = Constants.mapFile;
 		pheromoneDecay = Constants.pheromoneDecay;
 		yellRadius = Constants.yellRadius;
+		yellVolume = Constants.yellVolume;
 		yellRelay = Constants.yellRelay;
+		fireRadius = Constants.fireRadius;
 				
-		grid = envParser.parseImage(mapFile, droidsPerSpawner, pheromoneDecay, yellRadius, yellRelay);
+		grid = envParser.parseImage(mapFile, droidsPerSpawner, pheromoneDecay, yellVolume, yellRadius);
 				
 		result = new String("" + mapFile + Constants.delimiter + droidsPerSpawner + Constants.delimiter + pheromoneDecay + Constants.delimiter +
-				            yellRadius + Constants.delimiter + yellRelay + Constants.delimiter);
+				            yellRadius + Constants.delimiter + yellRelay + Constants.delimiter+grid.getInitialDroidCount()+Constants.delimiter+
+				            grid.getInitialFireCount()+Constants.delimiter+fireRadius+Constants.delimiter+trialNumber+Constants.delimiter);
 	}
 		
 	public String runSim() {
@@ -80,7 +85,7 @@ public class SimRunner implements Runnable{
 			result = result.concat(grid.getFireLeft() + Constants.delimiter);
 		} else {
 			result = result.concat(itNo + Constants.delimiter);
-			result = result.concat("1.0" +Constants.delimiter);
+			result = result.concat("0" +Constants.delimiter);
 		}
 		
 		
@@ -107,7 +112,7 @@ public class SimRunner implements Runnable{
 			}
 			
 			try {
-				Thread.sleep(1);
+				Thread.sleep(Constants.sleepDuration);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

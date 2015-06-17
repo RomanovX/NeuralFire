@@ -9,7 +9,6 @@ public class Fire extends WorldObject{
 	public Fire(){
 		movable = false;
 		stackable = false;
-
 	}
 
 	
