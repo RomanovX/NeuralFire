@@ -19,6 +19,9 @@ public class Main {
 		
 		final ArrayList<Thread> threadList = new ArrayList<Thread>();
 		
+		int clYellRadius = Integer.parseInt(args[0]);
+		System.out.println("Running with yellRadius:"+clYellRadius);
+		
 		try {
 			writer = new PrintWriter("SimSettings-"+System.currentTimeMillis()+".txt", "UTF-8");
 			
@@ -106,7 +109,8 @@ public class Main {
 				Constants.maxIterations = 5000;
 				Constants.trials = 8;
 				Constants.fireRadi = new int[]{10}; // fixed to 10 based on previous evaluation
-				Constants.yellRadi = new int[]{1,3, 5, 7, 9, 11, 13, 15, 20, 25};
+				//Constants.yellRadi = new int[]{1,3, 5, 7, 9, 11, 13, 15, 20, 25};
+				Constants.yellRadi = new int[]{clYellRadius};
 				Constants.yellRelays= new int[]{ 1, 2, 3, 4 };
 				Constants.pheromoneDecays = new double[]{0.005, 0.01, 0.05, 0.1, 0.2, 0.5};
 				Constants.initialNumberOfDroids = 20;
@@ -135,11 +139,11 @@ public class Main {
 				writer.write("##################################\n");
 				writer.write("Map mapping:\n");
 				writer.write("##################################\n");
-				File directory = new File("src/environmentMaps/"+Constants.mapDirectory+"/");
+				File directory = new File("environmentMaps/"+Constants.mapDirectory+"/");
 				int mapCount = 1;
 				for (final File fileEntry : directory.listFiles()) {
 			        if (!fileEntry.isDirectory()) {
-			        	String map ="src/environmentMaps/"+Constants.mapDirectory+"/"+fileEntry.getName(); 
+			        	String map ="environmentMaps/"+Constants.mapDirectory+"/"+fileEntry.getName(); 
 			        	maps.add(map);
 			        	writer.write(mapCount+" : "+map+"\n");
 			        	mapCount++;
@@ -166,6 +170,7 @@ public class Main {
 			int mapCount = 1;
 			for(String map : maps){
 				Constants.mapFile = map;
+				System.out.println(map);
 				for(int NumberOfDroids = Constants.initialNumberOfDroids; NumberOfDroids < Constants.maxDroids+1; NumberOfDroids = NumberOfDroids+Constants.numberOfDroidsIncrease){
 					Constants.droidsPerSpawner = NumberOfDroids;
 					// write map
