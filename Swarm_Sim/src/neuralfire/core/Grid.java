@@ -358,6 +358,7 @@ public class Grid extends JPanel implements ILosBoard, KeyListener {
 
 	public void setInitialFireCount(int initialFireCount) {
 		this.initialFireCount = initialFireCount;
+		this.fireLeft = this.initialFireCount;
 	}
 
 } // end class Grid

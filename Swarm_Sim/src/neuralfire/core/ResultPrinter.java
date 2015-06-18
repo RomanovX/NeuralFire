@@ -1,5 +1,6 @@
 package neuralfire.core;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -11,6 +12,9 @@ public class ResultPrinter {
 
 	private static PrintWriter writer;
 	
+	public static String filenamePrefix = "";
+	public static String filename;
+	
 	ResultPrinter(){
 		if(writerInUse == null){
 			writerInUse = new AtomicBoolean(false);
@@ -18,7 +22,8 @@ public class ResultPrinter {
 		
 		if(writer == null){
 			try {
-				writer = new PrintWriter("SimResults-"+System.currentTimeMillis()+".txt", "UTF-8");
+				filename = filenamePrefix + "SimResults-"+System.currentTimeMillis()+".txt"; 
+				writer = new PrintWriter(filename, "UTF-8");
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -42,5 +47,14 @@ public class ResultPrinter {
 	
 	public boolean getWriterInUse(){
 		return writerInUse.get();
+	}
+	
+	public static boolean finishFile(){
+		File file = new File(filename);
+
+		String finFilename  = "COM"+filename.substring(3, filename.length());
+	    File file2 = new File(finFilename);
+
+	    return file.renameTo(file2);
 	}
 }

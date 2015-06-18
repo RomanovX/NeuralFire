@@ -1,6 +1,8 @@
 package neuralfire.core;
 
 import java.awt.event.WindowEvent;
+import java.lang.management.ManagementFactory;
+
 import javax.swing.JFrame;
 
 public class SimRunner implements Runnable{
@@ -15,9 +17,11 @@ public class SimRunner implements Runnable{
 	int yellVolume;
 	int yellRelay;
 	int fireRadius;
+	int trialNumber;
+	int run;
 
 	
-	SimRunner(int trialNumber){
+	SimRunner(int trialNumber, int run, int mapId){
 		EnvironmentParser envParser = new EnvironmentParser();
 		
 		droidsPerSpawner = Constants.droidsPerSpawner;
@@ -27,12 +31,14 @@ public class SimRunner implements Runnable{
 		yellVolume = Constants.yellVolume;
 		yellRelay = Constants.yellRelay;
 		fireRadius = Constants.fireRadius;
+		this.trialNumber = trialNumber;
+		this.run = run;
 				
 		grid = envParser.parseImage(mapFile, droidsPerSpawner, pheromoneDecay, yellVolume, yellRadius);
 				
-		result = new String("" + mapFile + Constants.delimiter + droidsPerSpawner + Constants.delimiter + pheromoneDecay + Constants.delimiter +
-				            yellRadius + Constants.delimiter + yellRelay + Constants.delimiter+grid.getInitialDroidCount()+Constants.delimiter+
-				            grid.getInitialFireCount()+Constants.delimiter+fireRadius+Constants.delimiter+trialNumber+Constants.delimiter);
+		result = new String("" +run + Constants.delimiter+trialNumber+Constants.delimiter+ mapId + Constants.delimiter+grid.getInitialDroidCount()+Constants.delimiter + pheromoneDecay + Constants.delimiter +
+				            yellRadius + Constants.delimiter + yellRelay + Constants.delimiter+
+				            grid.getInitialFireCount()+Constants.delimiter);
 	}
 		
 	public String runSim() {
@@ -59,13 +65,18 @@ public class SimRunner implements Runnable{
 		
 		int itNo = 0;
 		double initialFireNumber = grid.getFireLeft();
-		boolean milestoneReached = false;
+		boolean milestone1Reached = false;
+		boolean milestone2Reached = false;
 		while(grid.getFireLeft() != 0 && itNo < Constants.maxIterations)
 		{
 			if(!grid.isPaused()){
-				if(((double)grid.getFireLeft())/initialFireNumber < Constants.fireExtinguishedMilestone && !milestoneReached){
-					result.concat(Constants.delimiter+itNo);
-					milestoneReached = true;
+				if(((double)grid.getFireLeft())/((double)grid.getInitialFireCount()) < Constants.fireExtinguishedMilestone1 && !milestone1Reached){
+					result = result.concat(itNo+Constants.delimiter);
+					milestone1Reached = true;
+				}
+				if(((double)grid.getFireLeft())/((double)grid.getInitialFireCount()) < Constants.fireExtinguishedMilestone2 && !milestone2Reached){
+					result = result.concat(itNo+Constants.delimiter);
+					milestone2Reached = true;
 				}
 				
 				itNo++;
@@ -76,7 +87,10 @@ public class SimRunner implements Runnable{
 		}
 		
 		// check if fire extinguishing milestone was not reached
-		if(!milestoneReached){
+		if(!milestone1Reached){
+			result = result.concat("-1" + Constants.delimiter);
+		}
+		if(!milestone2Reached){
 			result = result.concat("-1" + Constants.delimiter);
 		}
 		// Check if all fires were extinguished
@@ -87,6 +101,10 @@ public class SimRunner implements Runnable{
 			result = result.concat(itNo + Constants.delimiter);
 			result = result.concat("0" +Constants.delimiter);
 		}
+		
+		long nanos = ManagementFactory.getThreadMXBean().getThreadCpuTime(Thread.currentThread().getId());
+		System.out.println("trial "+trialNumber+" of run "+run+" took "+nanos+" nanoseconds, or "+(nanos/1000000000.0)+" seconds");
+		result = result.concat(""+(nanos/1000000000.0));
 		
 		
 		window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));

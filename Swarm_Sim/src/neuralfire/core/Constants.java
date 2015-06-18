@@ -66,13 +66,15 @@ public class Constants {
 	 * MISC
 	 */
 	public static int maxDroidPerField = 20;
+	public static int noCommandlineArg = -1;
 	
 	
 	/*
 	 * SIMULATION SETTINGS
 	 */
 	public static int maxIterations = 500;
-	public static double fireExtinguishedMilestone = 0.3;
+	public static double fireExtinguishedMilestone1 = 0.3;
+	public static double fireExtinguishedMilestone2 = 0.3;
 	public static String delimiter = ",";
 	public static int initialNumberOfDroids = 50;
 	public static int numberOfDroidsIncrease = 50;

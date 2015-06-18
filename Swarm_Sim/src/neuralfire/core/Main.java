@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +17,24 @@ public class Main {
 		PrintWriter writer;
 		
 		final ArrayList<Thread> threadList = new ArrayList<Thread>();
+		String location = Main.class.getResource("Main.class").toString();
+		String mapFolderPathPrefix = "";
+		if(location.startsWith("file")){
+			mapFolderPathPrefix = "src/";	
+		}
+		int beginRunNumber;
+		int endRunNumber;
+		
+		if(args.length == 2){
+			beginRunNumber= Integer.parseInt(args[0]);
+			endRunNumber= Integer.parseInt(args[1]);
+			ResultPrinter.filenamePrefix = "INC"+beginRunNumber+"-"+endRunNumber;
+			System.out.println("Will only execute runs "+beginRunNumber+"-"+endRunNumber);
+		}else{
+			beginRunNumber= Constants.noCommandlineArg;
+			endRunNumber= Constants.noCommandlineArg;
+			ResultPrinter.filenamePrefix = "INC";
+		}
 		
 		try {
 			writer = new PrintWriter("SimSettings-"+System.currentTimeMillis()+".txt", "UTF-8");
@@ -79,7 +96,7 @@ public class Main {
 				/* Simulation settings */
 				Constants.spawner = true;
 				Constants.useMapDirectory = false;
-				Constants.maxIterations = 2000;
+				Constants.maxIterations = 5000;
 				Constants.trials = 2;
 				Constants.fireRadi = new int[]{7};
 				Constants.yellRadi = new int[]{3};
@@ -98,6 +115,10 @@ public class Main {
 				Constants.pheromoneIncrease = 100;
 				Constants.sleepDuration = 0;
 				Constants.displayPheromoneDots = true;
+				// when 50% finished
+				Constants.fireExtinguishedMilestone1= 0.5;
+				// when 80% finished
+				Constants.fireExtinguishedMilestone2 = 0.2;
 				
 				/* Simulation settings */
 				Constants.spawner = true;
@@ -128,18 +149,17 @@ public class Main {
 				e.printStackTrace();
 			}
 			
-			java.nio.file.Path currentRelativePath = Paths.get("");
-			String s = currentRelativePath.toAbsolutePath().toString();
 			List<String> maps = new ArrayList<String>();
 			if(Constants.useMapDirectory){
 				writer.write("##################################\n");
 				writer.write("Map mapping:\n");
 				writer.write("##################################\n");
-				File directory = new File("src/environmentMaps/"+Constants.mapDirectory+"/");
+				String directoryLocation = mapFolderPathPrefix + "environmentMaps/"+Constants.mapDirectory+"/";
+				File directory = new File(directoryLocation);
 				int mapCount = 1;
 				for (final File fileEntry : directory.listFiles()) {
 			        if (!fileEntry.isDirectory()) {
-			        	String map ="src/environmentMaps/"+Constants.mapDirectory+"/"+fileEntry.getName(); 
+			        	String map = mapFolderPathPrefix + "environmentMaps/"+Constants.mapDirectory+"/"+fileEntry.getName(); 
 			        	maps.add(map);
 			        	writer.write(mapCount+" : "+map+"\n");
 			        	mapCount++;
@@ -160,12 +180,13 @@ public class Main {
 			writer.write("In matlab use: \n");
 			writer.write("M = csvread('"+filename+"', 3)\n");
 			int totalRuns = writeheader(writer, maps.size());
-			System.out.println("Now starting "+totalRuns+" runs");
-			int run = 1;
+			System.out.println("Now starting "+(totalRuns/Constants.trials)+" runs with "+Constants.trials+" each for a total of "+totalRuns+" Executions");
+			int run = 0;
 			
 			int mapCount = 1;
 			for(String map : maps){
 				Constants.mapFile = map;
+				System.out.println("Current map "+mapCount+": "+map);
 				for(int NumberOfDroids = Constants.initialNumberOfDroids; NumberOfDroids < Constants.maxDroids+1; NumberOfDroids = NumberOfDroids+Constants.numberOfDroidsIncrease){
 					Constants.droidsPerSpawner = NumberOfDroids;
 					// write map
@@ -184,46 +205,51 @@ public class Main {
 								// write yell relay
 								writer.write(Constants.yellRelay+Constants.delimiter);							
 								for(int pheroIndex = 0; pheroIndex < Constants.pheromoneDecays.length; pheroIndex++){
-									Constants.pheromoneDecay = Constants.pheromoneDecays[pheroIndex];
-									// write pheromone decay
-									writer.write(Constants.pheromoneDecay+Constants.delimiter);
-									
-									int nrOfProcessors = Runtime.getRuntime().availableProcessors();
-									System.out.println("availableProcessors " + Runtime.getRuntime().availableProcessors() +"\n");
-									ExecutorService executor = Executors.newFixedThreadPool(nrOfProcessors);
-									
-									System.gc(); /*force clean up old executor and threads*/
-									long startTime = System.currentTimeMillis();
-									
-									for (int i = 0; i < Constants.trials ; i++){
-										SimRunner newSim = new SimRunner(i);
-										Thread newThread = new Thread(newSim);
-										threadList.add(newThread);
-										executor.execute(newThread);
-									}
-									System.out.println("Executing " + Constants.trials + " threads\n");
-									
-									executor.shutdown();
-									executor.awaitTermination(600, TimeUnit.SECONDS);
-									long stopTime = System.currentTimeMillis();
-								    long elapsedTime = stopTime - startTime;
-								    System.out.println(elapsedTime+ " "+(elapsedTime/1000));
-									
-									System.out.println("Run "+run*Constants.trials+"/"+totalRuns);
 									run++;
-
-									Runtime runtime = Runtime.getRuntime();
+									if((beginRunNumber == Constants.noCommandlineArg || endRunNumber == Constants.noCommandlineArg) 
+											|| (run>= beginRunNumber && run<= endRunNumber)){
+										
+										Constants.pheromoneDecay = Constants.pheromoneDecays[pheroIndex];
+										// write pheromone decay
+										writer.write(Constants.pheromoneDecay+Constants.delimiter);
+										
+										int nrOfProcessors = Runtime.getRuntime().availableProcessors();
+										System.out.println("availableProcessors " + Runtime.getRuntime().availableProcessors() +"\n");
+										ExecutorService executor = Executors.newFixedThreadPool(nrOfProcessors);
+										
+										System.gc(); /*force clean up old executor and threads*/
+										long startTime = System.currentTimeMillis();
+										
+										for (int i = 0; i < Constants.trials ; i++){
+											SimRunner newSim = new SimRunner(i, run, mapCount);
+											Thread newThread = new Thread(newSim);
+											threadList.add(newThread);
+											executor.execute(newThread);
+										}
+										System.out.println("Executing " + Constants.trials + " threads\n");
+										
+										executor.shutdown();
+										executor.awaitTermination(600, TimeUnit.SECONDS);
+										long stopTime = System.currentTimeMillis();
+									    long elapsedTime = stopTime - startTime;
+									    System.out.println(elapsedTime+ " "+(elapsedTime/1000));
+										
+										System.out.println("Run "+run*Constants.trials+"/"+totalRuns);
+										
 	
-									StringBuilder sb = new StringBuilder();
-									long maxMemory = runtime.maxMemory();
-									long allocatedMemory = runtime.totalMemory();
-									long freeMemory = runtime.freeMemory();
-	
-									sb.append("free memory: " + freeMemory / 1024 + "\n");
-									sb.append("allocated memory: " + allocatedMemory / 1024+ "\n");
-									sb.append("max memory: " + maxMemory / 1024+ "\n");
-									sb.append("total free memory: " + (freeMemory + (maxMemory - allocatedMemory)) / 1024 + "\n");
-									System.out.println(sb.toString());
+										Runtime runtime = Runtime.getRuntime();
+		
+										StringBuilder sb = new StringBuilder();
+										long maxMemory = runtime.maxMemory();
+										long allocatedMemory = runtime.totalMemory();
+										long freeMemory = runtime.freeMemory();
+		
+										sb.append("free memory: " + freeMemory / 1024 + "\n");
+										sb.append("allocated memory: " + allocatedMemory / 1024+ "\n");
+										sb.append("max memory: " + maxMemory / 1024+ "\n");
+										sb.append("total free memory: " + (freeMemory + (maxMemory - allocatedMemory)) / 1024 + "\n");
+										System.out.println(sb.toString());
+									}
 								}
 							}
 						}
@@ -233,6 +259,10 @@ public class Main {
 				mapCount++;
 			}
 			writer.close();
+			if(ResultPrinter.finishFile())
+				System.out.println("Finished successfully!");
+			else
+				System.out.println("Failed while trying to rename file!");
 			
 			System.exit(0);
 		} catch (FileNotFoundException e) {
@@ -260,7 +290,7 @@ public class Main {
 						writer.write("PheromoneDecay "+(pheroIndex+1)+Constants.delimiter);
 						for (int i = 0; i < Constants.trials ; i++){
 							writer.write("Trial"+i+": Nr. of Droids "+Constants.delimiter);
-							writer.write("Trial"+i+": Iter until "+((1-Constants.fireExtinguishedMilestone)*100) +"%" +Constants.delimiter);
+							writer.write("Trial"+i+": Iter until "+((1-Constants.fireExtinguishedMilestone1)*100) +"%" +Constants.delimiter);
 							writer.write("Trial"+i+": Iter fin"+Constants.delimiter);
 							writer.write("Trial"+i+": Percentag fire remaining"+Constants.delimiter);
 							writer.write("Trial"+i+": Time"+Constants.delimiter);
