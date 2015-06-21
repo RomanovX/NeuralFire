@@ -122,17 +122,17 @@ public class Main {
 				
 				/* Simulation settings */
 				Constants.spawner = true;
-				//Constants.mapFile = "mapIO1.bmp";
-				Constants.useMapDirectory = true;
+				Constants.mapFile = "map6-v2.bmp";
+				Constants.useMapDirectory = false;
 				Constants.maxIterations = 5000;
-				Constants.trials = 8;
+				Constants.trials = 4;
 				Constants.fireRadi = new int[]{10}; // fixed to 10 based on previous evaluation
-				Constants.yellRadi = new int[]{1,3, 5, 7, 9, 11, 13, 15, 20, 25};
-				Constants.yellRelays= new int[]{ 1, 2, 3, 4 };
-				Constants.pheromoneDecays = new double[]{0.005, 0.01, 0.05, 0.1, 0.2, 0.5};
+				Constants.yellRadi = new int[]{1,5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
+				Constants.yellRelays= new int[]{ 1, 2, 3, 4, 5, 6, 7, 8 };
+				Constants.pheromoneDecays = new double[]{0.05};
 				Constants.initialNumberOfDroids = 20;
 				Constants.numberOfDroidsIncrease = 20;
-				Constants.maxDroids = 80;
+				Constants.maxDroids = 20;
 				Constants.visualizeProgress = false;
 			}
 			
